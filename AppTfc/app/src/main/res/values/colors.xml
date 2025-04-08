@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="teal_700">#018786</color>
+    <color name="gray_500">#9E9E9E</color>
+    <color name="primary_blue">#007AFF</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_dark">#757575</color>
+    <color name="primaryButton">#1976D2</color>
+    <color name="dark_gray">#666666</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="shadow">#40000000</color>
+</resources>
+
