@@ -41,6 +41,12 @@ public interface ApiService {
     @GET("records/{neighborhoodId}")
     Call<List<Record>> getRecords(@Path("neighborhoodId") int neighborhoodId);
 
+    @GET("incidences/{neighborhoodId}")
+    Call<List<Incidence>> getIncidencesByNeighborhoodId(@Path("neighborhoodId") int neighborhoodId);
+
+    @POST("incidences/{neighborId}")
+    Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
+
     @POST("users")
     Call<Void> createNeighbor(@Body PostRequest request);
 

@@ -51,7 +51,7 @@ public class MainNeighborActivity extends AppCompatActivity {
     private RecyclerView recyclerViewActas;
     private RecordAdapter recordAdapter;
     private List<Record> records;
-    BottomNavigationView bottomNav;
+    private BottomNavigationView bottomNav;
 
 
     @Override
@@ -67,6 +67,8 @@ public class MainNeighborActivity extends AppCompatActivity {
         communityName = findViewById(R.id.communityName);
         neighborhoodLogo = findViewById(R.id.neighborhoodLogo);
         bottomNav = findViewById(R.id.bottomNavigationView);
+
+        bottomNav.setSelectedItemId(R.id.nav_home);
 
         loadData(prefs);
 
@@ -100,12 +102,14 @@ public class MainNeighborActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_home){
 
                 } else if (item.getItemId() == R.id.nav_announcements){
-
+                    startActivity(new Intent(MainNeighborActivity.this, AnnouncementsActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return true;
                 } else if (item.getItemId() == R.id.nav_settings){
 
                 }
 
-                return true;
+                return false;
             }
         });
     }
@@ -116,6 +120,7 @@ public class MainNeighborActivity extends AppCompatActivity {
     }
 
     private void getNeighborhoodId(SharedPreferences prefs){
+        SharedPreferences.Editor editor = prefs.edit();
         ApiService apiService = RetrofitClient.get().create(ApiService.class);
         Call<Integer> call = apiService.getNeighborhoodId(prefs.getInt("id", -1));
 
@@ -124,6 +129,8 @@ public class MainNeighborActivity extends AppCompatActivity {
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     int neighborhoodId = response.body();
+                    editor.putInt("neighborhoodId", neighborhoodId);
+                    editor.apply();
                     getNeighborhoodData(neighborhoodId);
                     getAdminInfo(neighborhoodId, prefs);
                     getRecords(neighborhoodId);

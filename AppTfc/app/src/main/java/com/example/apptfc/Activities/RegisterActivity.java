@@ -155,8 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(RegisterActivity.this, "Registro realizado con éxito", Toast.LENGTH_SHORT).show();
-                    resetFields();
-                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    finish();
                 } else {
                     Log.e("RegisterActivity", "Error en la respuesta: " + response.code());
                     Toast.makeText(RegisterActivity.this, "Error en el registro: " + response.code(), Toast.LENGTH_LONG).show();
@@ -245,17 +244,5 @@ public class RegisterActivity extends AppCompatActivity {
                 callback.onResponse(null, Response.success(false));
             }
         });
-    }
-
-    private void resetFields() {
-        etName.setText("");
-        etSurname.setText("");
-        etUsername.setText("");
-        etEmail.setText("");
-        etPassword.setText("");
-        etConfirmPassword.setText("");
-        etAge.setText("");
-        etTlphNumber.setText("");
-        etCommunity.setText("");
     }
 }

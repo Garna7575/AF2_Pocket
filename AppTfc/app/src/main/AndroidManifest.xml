@@ -17,16 +17,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.incidences.PostIncidenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Neighbor.AnnouncementsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Neighbor.MainNeighborActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.admin.MainAdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.admin.MainAdmin"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.MainActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.LoginActivity"

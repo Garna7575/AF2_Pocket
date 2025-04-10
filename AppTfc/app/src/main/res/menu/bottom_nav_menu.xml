@@ -7,9 +7,9 @@
     <item
         android:id="@+id/nav_announcements"
         android:icon="@drawable/ic_megaphone"
-        android:title="Anuncios" />
+        android:title="Anuncios"/>
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
-        android:title="Ajustes" />
+        android:title="Ajustes"/>
 </menu>

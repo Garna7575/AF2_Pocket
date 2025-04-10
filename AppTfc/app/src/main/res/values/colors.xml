@@ -10,6 +10,9 @@
     <color name="primaryButton">#1976D2</color>
     <color name="dark_gray">#666666</color>
     <color name="light_gray">#F5F5F5</color>
+    <color name="teal_900">#004D40</color>
+    <color name="gray_700">#616161</color>
+    <color name="gray_600">#757575</color>
     <color name="shadow">#40000000</color>
 </resources>
 
