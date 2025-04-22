@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
     <color name="teal_700">#018786</color>
     <color name="gray_500">#9E9E9E</color>
     <color name="primary_blue">#007AFF</color>
@@ -14,5 +15,23 @@
     <color name="gray_700">#616161</color>
     <color name="gray_600">#757575</color>
     <color name="shadow">#40000000</color>
+
+    <color name="colorPrimary">#2962FF</color>
+    <color name="colorPrimaryLight">#768FFF</color>
+    <color name="colorPrimaryDark">#0039CB</color>
+    <color name="background_light">#F5F5F5</color>
+
+    <color name="card_settings">#E3F2FD</color>
+    <color name="card_personal">#E8F5E9</color>
+    <color name="card_receipts">#FFF8E1</color>
+
+    <color name="text_primary_light">#212121</color>
+    <color name="text_secondary_light">#757575</color>
+
+    <color name="icon_primary">#2962FF</color>
+    <color name="icon_secondary">#9E9E9E</color>
+
+    <color name="colorAccent">#FF5252</color>
+    <color name="text_primary">#212121</color>
 </resources>
 

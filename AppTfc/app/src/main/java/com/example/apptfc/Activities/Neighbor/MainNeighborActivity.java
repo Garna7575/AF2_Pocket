@@ -26,6 +26,7 @@ import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.Record;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.API.Vote;
+import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.RecordAdapter;
 import com.example.apptfc.adapters.VoteAdapter;
@@ -100,13 +101,16 @@ public class MainNeighborActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
 
                 if (item.getItemId() == R.id.nav_home){
-
+                    startActivity(new Intent(MainNeighborActivity.this, MainNeighborActivity.class));
+                    return true;
                 } else if (item.getItemId() == R.id.nav_announcements){
                     startActivity(new Intent(MainNeighborActivity.this, AnnouncementsActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 } else if (item.getItemId() == R.id.nav_settings){
-
+                    startActivity(new Intent(MainNeighborActivity.this, ProfileActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return true;
                 }
 
                 return false;
@@ -297,5 +301,11 @@ public class MainNeighborActivity extends AppCompatActivity {
                 Log.e("ImageDecode", "Error al decodificar la imagen Base64", e);
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
