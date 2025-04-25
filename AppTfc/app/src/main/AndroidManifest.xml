@@ -17,7 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.PersonalDataActivity"
+            android:name=".Activities.Neighbor.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PersonalInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.AccountInfoActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.SettingsActivity"

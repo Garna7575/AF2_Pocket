@@ -1,8 +1,9 @@
 package com.example.apptfc.Activities;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -21,9 +22,14 @@ import com.example.apptfc.API.User;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.NeighborhoodAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -33,7 +39,7 @@ import retrofit2.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private ApiService apiService;
-    private EditText etName, etSurname, etUsername, etEmail, etPassword, etConfirmPassword, etAge, etTlphNumber;
+    private EditText etName, etSurname, etUsername, etEmail, etPassword, etConfirmPassword, etBirthDate, etTlphNumber;
     private AutoCompleteTextView etCommunity;
     private Button btnRegister;
     private List<Neighborhood> neighborhoods = new ArrayList<>();
@@ -53,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        etAge = findViewById(R.id.etAge);
+        etBirthDate = findViewById(R.id.etBirthDate);
         btnRegister = findViewById(R.id.btnRegister);
         etCommunity = findViewById(R.id.etComunity);
         etTlphNumber = findViewById(R.id.etTlphNumber);
@@ -71,6 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        etBirthDate.setOnClickListener(v -> showDatePickerDialog());
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setEmail(etEmail.getText().toString());
                                 user.setUsername(username);
                                 user.setPassword(etPassword.getText().toString());
-                                user.setAge(Integer.parseInt(etAge.getText().toString()));
+                                user.setBirthDate(new Date(etBirthDate.getText().toString()));
                                 user.setHouse("12");
                                 user.setNeighborhoodId(neighborhoodId);
 
@@ -170,6 +178,50 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, dayOfMonth);
+                    updateBirthDate(selectedDate.getTime());
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
+    }
+
+    private void updateBirthDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        etBirthDate.setText(sdf.format(date));
+    }
+
+    private boolean isAdult() {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date birthDate = sdf.parse(etBirthDate.getText().toString());
+
+            Calendar today = Calendar.getInstance();
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.setTime(birthDate);
+
+            int age = today.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+
+            if (today.get(Calendar.DAY_OF_YEAR) < birthDay.get(Calendar.DAY_OF_YEAR)) {
+                age--;
+            }
+
+            return age >= 18;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
     private boolean validateFields() {
         boolean isValid = true;
 
@@ -177,15 +229,15 @@ public class RegisterActivity extends AppCompatActivity {
             showError(etName, "Campo obligatorio");
             isValid = false;
         }
-        if (etAge.getText().toString().trim().isEmpty()) {
-            showError(etAge, "Campo obligatorio");
-            isValid = false;
-        } else if (Integer.parseInt(etAge.getText().toString()) < 18) {
-            showError(etAge, "Debe ser mayor de 18");
-            isValid = false;
-        }
         if (etPassword.getText().toString().trim().isEmpty()) {
             showError(etPassword, "Campo obligatorio");
+            isValid = false;
+        }
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            etEmail.setError("Email requerido");
+            isValid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches()) {
+            etEmail.setError("Email no válido");
             isValid = false;
         }
         if (etConfirmPassword.getText().toString().trim().isEmpty()) {
@@ -206,6 +258,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!neighborhoodExists) {
             showError(etCommunity, "Vecindario no válido");
+            isValid = false;
+        }
+
+        if (etBirthDate.getText().toString().trim().isEmpty()) {
+            showError(etBirthDate, "Campo obligatorio");
+            isValid = false;
+        } else if (!isAdult()) {
+            showError(etBirthDate, "Debes ser mayor de 18 años");
             isValid = false;
         }
 
@@ -245,4 +305,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

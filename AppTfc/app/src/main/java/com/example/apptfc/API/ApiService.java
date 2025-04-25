@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -50,6 +51,13 @@ public interface ApiService {
     @POST("users")
     Call<Void> createNeighbor(@Body PostRequest request);
 
+    @POST("users/change-password/{id}")
+    Call<Void> changePassword(@Body PasswordChangeRequest request, @Path("id") int id);
+
     @POST("votes/vote/{neighborId}/{voteId}/{inFavor}")
     Call<ResponseBody> vote(@Path("neighborId") int neighborId, @Path("voteId") int voteId, @Path("inFavor") boolean inFavor);
+
+    @PUT("users/{id}")
+    Call<Void> updateUser(@Body User user, @Path("id") int id);
+
 }

@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Incidence;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.Activities.incidences.PostIncidenceActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
@@ -106,10 +107,12 @@ public class AnnouncementsActivity extends AppCompatActivity {
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     return true;
                 } else if (item.getItemId() == R.id.nav_announcements){
-
+                    startActivity(new Intent(AnnouncementsActivity.this, AnnouncementsActivity.class));
                     return true;
                 } else if (item.getItemId() == R.id.nav_settings){
-
+                    startActivity(new Intent(AnnouncementsActivity.this, ProfileActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return true;
                 }
 
                 return false;

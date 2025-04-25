@@ -7,4 +7,20 @@
     <string name="personal_data_subtitle">Gestiona tu información</string>
     <string name="receipts">Recibos</string>
     <string name="receipts_subtitle">Historial de pagos</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellidos</string>
+    <string name="email">Email</string>
+    <string name="phone">Teléfono</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="save_changes">Guardar cambios</string>
+    <string name="change_password">Cambiar contraseña</string>
+    <string name="cancel">Cancelar</string>
+    <string name="change_photo">Cambiar foto</string>
+    <string name="username">Nombre de usuario\n</string>
+    <string name="current_password">Contraseña actual</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="confirm_new_password">Confirmar nueva contraseña</string>
+    <string name="lock_icon_desc">Icono de candado</string>
+    <string name="password_requirements">Mínimo 8 caracteres</string>
+    <string name="password_requirements_list">• Mínimo 8 caracteres\n• Al menos un número\n• Al menos una mayúscula\n• Al menos un carácter especial</string>
 </resources>

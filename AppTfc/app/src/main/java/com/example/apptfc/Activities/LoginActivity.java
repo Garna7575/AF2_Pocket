@@ -96,6 +96,10 @@ public class LoginActivity extends AppCompatActivity {
         editor.putInt("id", user.getId());
         editor.putString("username", user.getUsername());
         editor.putString("name", user.getName());
+        editor.putString("surname", user.getSurname());
+        editor.putString("email", user.getEmail());
+        editor.putString("username", user.getUsername());
+        editor.putString("birthDate", user.getBirthDate().toString());
         editor.putString("tlphNumber", user.getTlphNumber());
         editor.apply();
     }

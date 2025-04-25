@@ -4,22 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.apptfc.Activities.Neighbor.ChangePasswordActivity;
 import com.example.apptfc.R;
 
-public class PersonalDataActivity extends AppCompatActivity {
+public class AccountInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_data);
+        setContentView(R.layout.activity_account_info);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -29,12 +26,12 @@ public class PersonalDataActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.btn_personal_data).setOnClickListener(v -> {
-            startActivity(new Intent(this, PersonalDataActivity.class));
+            startActivity(new Intent(this, PersonalInfoActivity.class));
         });
 
-//        findViewById(R.id.btn_change_credentials).setOnClickListener(v -> {
-//            startActivity(new Intent(this, ChangePasswordActivity.class));
-//        });
+        findViewById(R.id.btn_change_credentials).setOnClickListener(v -> {
+            startActivity(new Intent(this, ChangePasswordActivity.class));
+        });
 
         findViewById(R.id.btn_logout).setOnClickListener(v -> {
             showLogoutDialog();

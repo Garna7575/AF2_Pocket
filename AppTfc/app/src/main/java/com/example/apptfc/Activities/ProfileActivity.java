@@ -2,10 +2,7 @@ package com.example.apptfc.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         optionPersonalData.setOnClickListener(v -> {
-            startActivity(new Intent(ProfileActivity.this, PersonalDataActivity.class));
+            startActivity(new Intent(ProfileActivity.this, AccountInfoActivity.class));
         });
 //
 //        optionReceipts.setOnClickListener(v -> {
