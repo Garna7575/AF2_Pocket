@@ -10,10 +10,14 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("users/{username}/{password}")
     Call<User> getUser(@Path("username") String username, @Path("password") String password);
+
+    @GET("users/recovery/{email}")
+    Call<User> getUserByEmail(@Path("email") String email);
 
     @GET("users/{username}")
     Call<User> getUserByUsername(@Path("username") String username);
@@ -50,6 +54,9 @@ public interface ApiService {
 
     @POST("users")
     Call<Void> createNeighbor(@Body PostRequest request);
+
+    @POST("users/forgot-password")
+    Call<Void> forgotPassword(@Body ForgotPassword email);
 
     @POST("users/change-password/{id}")
     Call<Void> changePassword(@Body PasswordChangeRequest request, @Path("id") int id);
