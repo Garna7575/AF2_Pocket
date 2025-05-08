@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.AddReservation"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.BookingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Neighbor.ChangePasswordActivity"
             android:exported="false" />
         <activity

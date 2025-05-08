@@ -49,6 +49,10 @@ public interface ApiService {
     @GET("incidences/{neighborhoodId}")
     Call<List<Incidence>> getIncidencesByNeighborhoodId(@Path("neighborhoodId") int neighborhoodId);
 
+    @GET("reservations/date")
+    Call<List<Reservation>> getReservationsByDate(@Query("date") String date, @Query("id") int userId
+    );
+
     @POST("incidences/{neighborId}")
     Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
 

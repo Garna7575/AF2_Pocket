@@ -55,6 +55,9 @@ public class ProfileActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.nav_settings){
                     startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
                     return true;
+                } else if (item.getItemId() == R.id.nav_bookings) {
+                    startActivity(new Intent(ProfileActivity.this, BookingsActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
 
                 return false;

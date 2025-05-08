@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Incidence;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.BookingsActivity;
 import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.Activities.incidences.PostIncidenceActivity;
 import com.example.apptfc.R;
@@ -113,6 +114,9 @@ public class AnnouncementsActivity extends AppCompatActivity {
                     startActivity(new Intent(AnnouncementsActivity.this, ProfileActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
+                } else if (item.getItemId() == R.id.nav_bookings) {
+                    startActivity(new Intent(AnnouncementsActivity.this, BookingsActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
 
                 return false;

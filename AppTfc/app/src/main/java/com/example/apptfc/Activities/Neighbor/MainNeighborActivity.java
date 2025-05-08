@@ -26,6 +26,7 @@ import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.Record;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.API.Vote;
+import com.example.apptfc.Activities.BookingsActivity;
 import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.RecordAdapter;
@@ -107,6 +108,9 @@ public class MainNeighborActivity extends AppCompatActivity {
                     startActivity(new Intent(MainNeighborActivity.this, AnnouncementsActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
+                } else if (item.getItemId() == R.id.nav_bookings){
+                    startActivity(new Intent(MainNeighborActivity.this, BookingsActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (item.getItemId() == R.id.nav_settings){
                     startActivity(new Intent(MainNeighborActivity.this, ProfileActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
