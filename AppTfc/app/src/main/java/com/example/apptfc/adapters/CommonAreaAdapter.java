@@ -1,6 +1,5 @@
 package com.example.apptfc.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,14 @@ import com.example.apptfc.API.CommonArea;
 import com.example.apptfc.R;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.ViewHolder> {
     private List<CommonArea> commonAreas;
     private final OnAreaSelectedListener listener;
-    private int selectedPosition = -1;
     private CommonArea selectedArea = null;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public interface OnAreaSelectedListener {
         void onAreaSelected(CommonArea area);
@@ -32,38 +32,51 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
     }
 
     public void updateData(List<CommonArea> newData) {
+        if (newData != null) {
+            Collections.sort(newData, (a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+        }
+
         this.commonAreas = newData;
+        if (selectedArea != null) {
+            selectedPosition = RecyclerView.NO_POSITION;
+            for (int i = 0; i < newData.size(); i++) {
+                if (newData.get(i).getId() == selectedArea.getId()) {
+                    selectedPosition = i;
+                    selectedArea = newData.get(i);
+                    break;
+                }
+            }
+            if (selectedPosition == RecyclerView.NO_POSITION) {
+                selectedArea = null;
+            }
+        }
         notifyDataSetChanged();
     }
 
+
     public void setSelectedArea(CommonArea area) {
         this.selectedArea = area;
-        this.selectedPosition = findAreaPosition(area);
+        if (commonAreas != null) {
+            for (int i = 0; i < commonAreas.size(); i++) {
+                if (commonAreas.get(i).getId() == area.getId()) {
+                    selectedPosition = i;
+                    break;
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
     public void setSelectedPosition(int position) {
         if (position >= 0 && position < commonAreas.size()) {
-            this.selectedPosition = position;
-            this.selectedArea = commonAreas.get(position);
+            selectedArea = commonAreas.get(position);
+            selectedPosition = position;
             notifyDataSetChanged();
-
-            // Notificar al listener si es necesario
-            if (listener != null) {
-                listener.onAreaSelected(selectedArea);
-            }
         }
     }
 
-    private int findAreaPosition(CommonArea area) {
-        if (area == null || commonAreas == null) return -1;
-
-        for (int i = 0; i < commonAreas.size(); i++) {
-            if (commonAreas.get(i).getId() == area.getId()) {
-                return i;
-            }
-        }
-        return -1;
+    public CommonArea getSelectedArea() {
+        return selectedArea;
     }
 
     @NonNull
@@ -79,8 +92,7 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
         CommonArea area = commonAreas.get(position);
         holder.tvCommonAreaName.setText(area.getName());
 
-        boolean isSelected = position == selectedPosition ||
-                (selectedArea != null && selectedArea.getId() == area.getId());
+        boolean isSelected = position == selectedPosition;
 
         holder.card.setStrokeWidth(isSelected ? 4 : 0);
         holder.card.setStrokeColor(isSelected ?
@@ -88,7 +100,11 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
                 0);
 
         holder.itemView.setOnClickListener(v -> {
-            setSelectedPosition(position);
+            selectedArea = area;
+            int previousPosition = selectedPosition;
+            selectedPosition = holder.getAdapterPosition();
+            notifyItemChanged(previousPosition);
+            notifyItemChanged(selectedPosition);
             if (listener != null) {
                 listener.onAreaSelected(area);
             }
@@ -98,10 +114,6 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
     @Override
     public int getItemCount() {
         return commonAreas != null ? commonAreas.size() : 0;
-    }
-
-    public CommonArea getSelectedArea() {
-        return selectedArea;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -115,3 +127,4 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
         }
     }
 }
+
