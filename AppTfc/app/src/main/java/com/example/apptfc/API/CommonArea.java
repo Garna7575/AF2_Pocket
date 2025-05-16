@@ -3,7 +3,6 @@ package com.example.apptfc.API;
 public class CommonArea {
     private int id;
     private String name;
-    private Neighborhood neighborhood;
 
     public int getId() {
         return id;
@@ -21,11 +20,11 @@ public class CommonArea {
         this.name = name;
     }
 
-    public Neighborhood getNeighborhood() {
-        return neighborhood;
-    }
-
-    public void setNeighborhood(Neighborhood neighborhood) {
-        this.neighborhood = neighborhood;
+    @Override
+    public String toString() {
+        return "CommonArea{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

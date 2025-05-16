@@ -32,9 +32,6 @@
             android:name=".Activities.AccountInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.ProfileActivity"
             android:exported="false" />
         <activity

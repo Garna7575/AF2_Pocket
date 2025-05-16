@@ -2,7 +2,7 @@ package com.example.apptfc.API;
 
 public class Vote {
     private int id;
-    private String name, description;
+    private String title, description;
 
     public int getId() {
         return id;
@@ -13,11 +13,11 @@ public class Vote {
     }
 
     public String getName() {
-        return name;
+        return title;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.title = name;
     }
 
     public String getDescription() {
@@ -26,5 +26,14 @@ public class Vote {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

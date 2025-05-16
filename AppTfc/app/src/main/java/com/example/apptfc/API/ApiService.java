@@ -6,6 +6,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -50,8 +51,13 @@ public interface ApiService {
     Call<List<Incidence>> getIncidencesByNeighborhoodId(@Path("neighborhoodId") int neighborhoodId);
 
     @GET("reservations/date")
-    Call<List<Reservation>> getReservationsByDate(@Query("date") String date, @Query("id") int userId
-    );
+    Call<List<Reservation>> getReservationsByDate(@Query("date") String date, @Query("id") int userId);
+
+    @GET("common-area/{id}")
+    Call<List<CommonArea>> getCommonAreaByNeighborhood(@Path("id") int neighborhoodId);
+
+    @GET("reservations/availability")
+    Call<Boolean> checkIfAvailable(@Query("commonAreaId") int commonAreaId, @Query("startTime") String startTime, @Query("endTime") String endTime);
 
     @POST("incidences/{neighborId}")
     Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
@@ -68,7 +74,16 @@ public interface ApiService {
     @POST("votes/vote/{neighborId}/{voteId}/{inFavor}")
     Call<ResponseBody> vote(@Path("neighborId") int neighborId, @Path("voteId") int voteId, @Path("inFavor") boolean inFavor);
 
+    @POST("reservations")
+    Call<Void> createReservation(@Body PostAreaReservation reservation);
+
     @PUT("users/{id}")
     Call<Void> updateUser(@Body User user, @Path("id") int id);
+
+    @PUT("reservations/{id}")
+    Call<Void> updateReservation(@Path("id") int id, @Body PostAreaReservation reservation);
+
+    @DELETE("reservations/{id}")
+    Call<Void> deleteReservation(@Path("id") int id);
 
 }
