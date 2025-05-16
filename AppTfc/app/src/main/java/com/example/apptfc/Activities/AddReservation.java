@@ -385,14 +385,15 @@ public class AddReservation extends AppCompatActivity {
                 } else {
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "";
-                        if (errorBody.contains("no está disponible")) {
-                            showError("El área ya no está disponible. Verifica los horarios.");
+                        if (errorBody.contains("no está disponible") || errorBody.contains("IllegalArgumentException")) {
+                            showError("El área ya no está disponible para el horario seleccionado. Por favor, elige otro horario o área.");
                         } else {
-                            showError("Error: " + response.code());
+                            showError("Error al procesar la reserva. Código: " + response.code());
                         }
+                        // Volver a verificar disponibilidad
                         checkAvailability();
                     } catch (IOException e) {
-                        showError("Error al procesar la respuesta");
+                        showError("Error al procesar la respuesta del servidor");
                     }
                 }
             }
@@ -400,7 +401,11 @@ public class AddReservation extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 progressDialog.dismiss();
-                showError("Error de conexión: " + t.getMessage());
+                if (t instanceof IllegalArgumentException) {
+                    showError("El área no está disponible en el horario solicitado. Por favor, elige otro horario.");
+                } else {
+                    showError("Error de conexión: " + t.getMessage());
+                }
             }
         });
     }
