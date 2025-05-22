@@ -9,7 +9,9 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,9 +41,11 @@ import retrofit2.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private ApiService apiService;
-    private EditText etName, etSurname, etUsername, etEmail, etPassword, etConfirmPassword, etBirthDate, etTlphNumber;
+    private EditText etName, etSurname, etUsername, etEmail, etPassword, etConfirmPassword, etBirthDate, etTlphNumber, etHouse;
     private AutoCompleteTextView etCommunity;
+    private CheckBox cbTerms;
     private Button btnRegister;
+    private TextView tvLoginLink;
     private List<Neighborhood> neighborhoods = new ArrayList<>();
     private NeighborhoodAdapter adapter;
     private Map<String, Integer> neighborhoodMap = new HashMap<>();
@@ -63,6 +67,9 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         etCommunity = findViewById(R.id.etComunity);
         etTlphNumber = findViewById(R.id.etTlphNumber);
+        etHouse = findViewById(R.id.etHouse);
+        cbTerms = findViewById(R.id.cbTerms);
+        tvLoginLink = findViewById(R.id.tvLoginLink);
 
         adapter = new NeighborhoodAdapter(this, neighborhoods);
         etCommunity.setAdapter(adapter);
@@ -103,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setUsername(username);
                                 user.setPassword(etPassword.getText().toString());
                                 user.setBirthDate(new Date(etBirthDate.getText().toString()));
-                                user.setHouse("12");
+                                user.setHouse(etHouse.getText().toString());
                                 user.setNeighborhoodId(neighborhoodId);
 
                                 registerUser(user);
@@ -116,6 +123,13 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        tvLoginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -247,6 +261,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (etTlphNumber.getText().toString().trim().isEmpty()){
             showError(etTlphNumber, "Campo obligatorio");
             isValid = false;
+        } else if (etTlphNumber.getText().toString().length() != 9){
+            showError(etTlphNumber, "El campo debe tener 9 caractéres");
+            isValid = false;
         }
         if (!etPassword.getText().toString().equals(etConfirmPassword.getText().toString())) {
             showError(etConfirmPassword, "Las contraseñas no coinciden");
@@ -255,17 +272,19 @@ public class RegisterActivity extends AppCompatActivity {
         String selectedNeighborhood = etCommunity.getText().toString().trim();
         boolean neighborhoodExists = neighborhoods.stream()
                 .anyMatch(neighborhood -> neighborhood.getName().equalsIgnoreCase(selectedNeighborhood));
-
         if (!neighborhoodExists) {
             showError(etCommunity, "Vecindario no válido");
             isValid = false;
         }
-
         if (etBirthDate.getText().toString().trim().isEmpty()) {
             showError(etBirthDate, "Campo obligatorio");
             isValid = false;
         } else if (!isAdult()) {
             showError(etBirthDate, "Debes ser mayor de 18 años");
+            isValid = false;
+        }
+        if (!cbTerms.isChecked()){
+            showError(etBirthDate, "Debes aceptar las normas");
             isValid = false;
         }
 

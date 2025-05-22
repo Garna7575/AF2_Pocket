@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.apptfc.API.Receipt;
 import com.example.apptfc.Activities.Neighbor.AnnouncementsActivity;
 import com.example.apptfc.Activities.Neighbor.MainNeighborActivity;
 import com.example.apptfc.R;
@@ -34,10 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
         optionPersonalData.setOnClickListener(v -> {
             startActivity(new Intent(ProfileActivity.this, AccountInfoActivity.class));
         });
-//
-//        optionReceipts.setOnClickListener(v -> {
-//            startActivity(new Intent(ProfileActivity.this, ReceiptsActivity.class));
-//        });
+
+        optionReceipts.setOnClickListener(v -> {
+            startActivity(new Intent(ProfileActivity.this, ReceiptListActivity.class));
+        });
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

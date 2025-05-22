@@ -11,6 +11,7 @@ retrofit = "2.9.0"
 gson = "2.9.0"
 glide = "4.15.1"
 swiperefreshlayout = "1.1.0"
+play-billing = "6.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,6 +26,7 @@ retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref 
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glideCompiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+play-billing = { group = "com.android.billingclient", name = "billing", version.ref = "play-billing" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -390,7 +390,7 @@ public class AddReservation extends AppCompatActivity {
                         } else {
                             showError("Error al procesar la reserva. Código: " + response.code());
                         }
-                        // Volver a verificar disponibilidad
+                        
                         checkAvailability();
                     } catch (IOException e) {
                         showError("Error al procesar la respuesta del servidor");

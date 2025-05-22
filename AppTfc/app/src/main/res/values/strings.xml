@@ -31,4 +31,23 @@
     <string name="or">o</string>
     <string name="create_account">Crear una cuenta</string>
     <string name="title_bookings">Reservas</string>
+    <string name="create_account_title">Crear cuenta</string>
+    <string name="create_account_subtitle">Completa tus datos para registrarte</string>
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="neighborhood">Vecindario</string>
+    <string name="i_agree_to_terms">Acepto los</string>
+    <string name="terms_and_conditions">Términos y condiciones</string>
+    <string name="register">Registrarse</string>
+    <string name="already_have_account">¿Ya tienes cuenta?</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="app_logo_desc">Logo de la comunidad</string>
+    <string name="join_community">Únete a la comunidad</string>
+    <string name="registration_subtitle">Tu comunidad tamaño de bolsillo</string>
+    <string name="access_credentials">Credenciales de acceso</string>
+    <string name="community_data">Datos de la comunidad</string>
+    <string name="select_neighborhood">Selecciona tu vecindario</string>
+    <string name="accept_terms">Acepto las normas de la comunidad</string>
+    <string name="complete_registration">Completar registro</string>
+    <string name="already_registered_login">¿Ya estás registrado? Inicia sesión</string>
 </resources>

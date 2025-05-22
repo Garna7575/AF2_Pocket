@@ -45,4 +45,5 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.glide)
     annotationProcessor(libs.glideCompiler)
+    implementation(libs.play.billing)
 }

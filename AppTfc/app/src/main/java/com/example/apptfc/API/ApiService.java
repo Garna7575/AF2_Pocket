@@ -59,6 +59,9 @@ public interface ApiService {
     @GET("reservations/availability")
     Call<Boolean> checkIfAvailable(@Query("commonAreaId") int commonAreaId, @Query("startTime") String startTime, @Query("endTime") String endTime);
 
+    @GET("receipts/{id}")
+    Call<List<Receipt>> getReceiptsByNeighbor(@Path("id") int id);
+
     @POST("incidences/{neighborId}")
     Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
 
@@ -82,6 +85,9 @@ public interface ApiService {
 
     @PUT("reservations/{id}")
     Call<Void> updateReservation(@Path("id") int id, @Body PostAreaReservation reservation);
+
+    @PUT("receipts/payment/{id}")
+    Call<Void> payment(@Path("id") int id);
 
     @DELETE("reservations/{id}")
     Call<Void> deleteReservation(@Path("id") int id);
