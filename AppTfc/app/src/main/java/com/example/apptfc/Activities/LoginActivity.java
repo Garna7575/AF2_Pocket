@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements com.example.apptfc.Dialogs.ForgotPasswordDialog.ForgotPasswordListener {
 
     private ApiService apiService;
     private EditText etUsername;
@@ -126,29 +126,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showForgotPasswordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Recuperar contraseña");
-
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        input.setHint("Ingrese el correo asociado con su cuenta");
-        builder.setView(input);
-
-        builder.setPositiveButton("Enviar", (dialog, which) -> {
-            String email = input.getText().toString().trim();
-            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                searchUser(email);
-            } else {
-                Toast.makeText(this, "Email no válido", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
-
-        builder.show();
+        com.example.apptfc.Dialogs.ForgotPasswordDialog dialog = new com.example.apptfc.Dialogs.ForgotPasswordDialog();
+        dialog.show(getSupportFragmentManager(), "ForgotPasswordDialog");
     }
 
-    private void sendPasswordResetEmail(String email, int id) {
+    protected void sendPasswordResetEmail(String email, int id) {
         apiService = RetrofitClient.get().create(ApiService.class);
 
         progressDialog.setMessage("Enviando email de recuperación...");
@@ -179,6 +161,11 @@ public class LoginActivity extends AppCompatActivity {
                         "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onEmailEntered(String email) {
+        searchUser(email);
     }
 
     private void storeInfo(User user){
