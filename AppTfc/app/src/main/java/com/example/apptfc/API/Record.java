@@ -1,5 +1,8 @@
 package com.example.apptfc.API;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
@@ -7,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Record {
+public class Record implements Parcelable {
     private int id;
     private String name;
     private String description;
@@ -36,4 +39,38 @@ public class Record {
         }
         return "No disponible";
     }
+
+    public Record() {}
+
+    protected Record(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        dateString = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(dateString);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Record> CREATOR = new Creator<Record>() {
+        @Override
+        public Record createFromParcel(Parcel in) {
+            return new Record(in);
+        }
+
+        @Override
+        public Record[] newArray(int size) {
+            return new Record[size];
+        }
+    };
 }

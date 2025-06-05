@@ -36,68 +36,6 @@
                     android:background="@drawable/circle_background"/>
             </LinearLayout>
 
-            <!--<androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:cardElevation="2dp"
-                app:cardCornerRadius="12dp"
-                app:contentPadding="1dp"
-                android:backgroundTint="@color/card_settings">
-
-                <LinearLayout
-                    android:id="@+id/option_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:background="@drawable/option_ripple"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:importantForAccessibility="yes">
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:contentDescription="@string/settings"
-                        app:srcCompat="@drawable/ic_settings"
-                        app:tint="@color/icon_primary"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/OptionTitle"
-                            android:text="@string/settings"
-                            android:importantForAccessibility="no"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content" />
-
-                        <TextView
-                            style="@style/OptionSubtitle"
-                            android:text="@string/settings_subtitle"
-                            android:importantForAccessibility="no"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@null"
-                        app:srcCompat="@drawable/ic_arrow_right"
-                        app:tint="@color/icon_secondary"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>-->
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

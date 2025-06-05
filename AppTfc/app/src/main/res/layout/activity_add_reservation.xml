@@ -40,7 +40,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Selector de hora INICIAL -->
+        <!-- Selector de hora INICIO -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,64 +65,89 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center_vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDecreaseStartHour"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                    <TextView
-                        android:id="@+id/tvStartHour"
-                        android:layout_width="wrap_content"
+                    <!-- Grupo Hora -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="09"
-                        android:textSize="20sp" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnIncreaseStartHour"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="+"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDecreaseStartHour"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="-"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tvStartHour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="09"
+                            android:textSize="20sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnIncreaseStartHour"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="+"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    </LinearLayout>
+
+                    <!-- Grupo Minutos -->
+                    <HorizontalScrollView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="Minutos:"
-                        android:textSize="16sp" />
+                        android:layout_weight="1"
+                        android:scrollbars="none">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDecreaseStartMinute"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="16dp"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvStartMinute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="00"
-                        android:textSize="20sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Minutos:"
+                                android:textSize="16sp"
+                                android:paddingEnd="4dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnIncreaseStartMinute"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="+"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnDecreaseStartMinute"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="4dp"
+                                android:text="-"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <TextView
+                                android:id="@+id/tvStartMinute"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="00"
+                                android:textSize="20sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnIncreaseStartMinute"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:text="+"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Selector de hora FINAL -->
+        <!-- Selector de hora FIN -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,63 +172,82 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center_vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDecreaseEndHour"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                    <TextView
-                        android:id="@+id/tvEndHour"
-                        android:layout_width="wrap_content"
+                    <!-- Grupo Hora -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="10"
-                        android:textSize="20sp" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnIncreaseEndHour"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="+"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDecreaseEndHour"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="-"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tvEndHour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="10"
+                            android:textSize="20sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnIncreaseEndHour"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="+"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    </LinearLayout>
+
+                    <!-- Grupo Minutos -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="Minutos:"
-                        android:textSize="16sp" />
+                        android:layout_weight="1.2"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDecreaseEndMinute"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="16dp"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Minutos:"
+                            android:textSize="16sp"
+                            android:minWidth="72dp" />
 
-                    <TextView
-                        android:id="@+id/tvEndMinute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:text="00"
-                        android:textSize="20sp" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDecreaseEndMinute"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="8dp"
+                            android:text="-"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnIncreaseEndMinute"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="+"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <TextView
+                            android:id="@+id/tvEndMinute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="00"
+                            android:textSize="20sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnIncreaseEndMinute"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="+"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Resto del layout -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -219,7 +263,6 @@
             android:layout_marginBottom="16dp"
             tools:listitem="@layout/item_common_area" />
 
-        <!-- Botón de reserva -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreateReservation"
             android:layout_width="match_parent"

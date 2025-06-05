@@ -166,7 +166,6 @@ public class MainNeighborActivity extends AppCompatActivity {
             public void onResponse(Call<Neighborhood> call, Response<Neighborhood> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     communityName.setText(communityName.getText() + response.body().getName());
-                    Log.d("hoodData", response.body().getImage().toString());
                     formatImage(response.body().getImage());
                     Log.d("MainNeighborActivity", "Vecindario encontrado");
                 } else {
@@ -292,7 +291,6 @@ public class MainNeighborActivity extends AppCompatActivity {
     }
 
     private void formatImage(String image) {
-        Log.d("Base64", "Imagen Base64 (primeros 50): " + image.substring(0, 50));
         if (image != null && !image.isEmpty()) {
             Log.d("ImageDebug", "Entrando a formatImage");
             try {

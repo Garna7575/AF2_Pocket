@@ -50,4 +50,9 @@
     <string name="accept_terms">Acepto las normas de la comunidad</string>
     <string name="complete_registration">Completar registro</string>
     <string name="already_registered_login">¿Ya estás registrado? Inicia sesión</string>
+    <string name="neighborhood_image">Imagen de la comunidad</string>
+    <plurals name="records_count">
+        <item quantity="one">%d documento</item>
+        <item quantity="other">%d documentos</item>
+    </plurals>
 </resources>

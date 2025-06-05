@@ -3,6 +3,7 @@ package com.example.apptfc.API;
 public class Neighbor {
     private int id;
     private String house;
+    private User user;
 
     public int getId() {
         return id;
@@ -18,5 +19,22 @@ public class Neighbor {
 
     public void setHouse(String house) {
         this.house = house;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Neighbor{" +
+                "id=" + id +
+                ", house='" + house + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

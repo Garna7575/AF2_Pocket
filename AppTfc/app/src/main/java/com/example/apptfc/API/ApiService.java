@@ -26,17 +26,26 @@ public interface ApiService {
     @GET("neighbor/{userId}")
     Call<Neighbor> getNeighborByUserId(@Path("userId") int userId);
 
+    @GET("neighbor/by-neighborhood/{neighborhoodId}")
+    Call<List<Neighbor>> getNeighborsByNeighborhood(@Path("neighborhoodId") int neighborhoodId);
+
     @GET("neighborhood")
     Call<List<Neighborhood>> getAllNeighborhoods();
 
     @GET("admin/{id}")
     Call<User> getAdminById(@Path("id") int id);
 
+    @GET("admin/userId/{id}")
+    Call<Admin> getAdminByUserId(@Path("id") int id);
+
     @GET("neighbor/neighborhood-id/{userId}")
     Call<Integer> getNeighborhoodId(@Path("userId") int userId);
 
     @GET("neighborhood/{id}")
     Call<Neighborhood> getNeighborhoodById(@Path("id") int id);
+
+    @GET("neighborhood/admin/{id}")
+    Call<List<Neighborhood>> getNeighborhoodByAdminId(@Path("id") int id);
 
     @GET("neighborhood/{neighborhoodId}/admin")
     Call<Admin> getAdminByNeighborhoodId(@Path("neighborhoodId") int neighborhoodId);
@@ -65,7 +74,7 @@ public interface ApiService {
     @POST("incidences/{neighborId}")
     Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
 
-    @POST("users")
+    @POST("users/neighbor")
     Call<Void> createNeighbor(@Body PostRequest request);
 
     @POST("users/forgot-password")
