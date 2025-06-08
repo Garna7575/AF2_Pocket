@@ -3,20 +3,25 @@ package com.example.apptfc.Activities.admin;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.ApiService;
+import com.example.apptfc.API.Incidence;
 import com.example.apptfc.API.Neighbor;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.R;
+import com.example.apptfc.adapters.IncidenceAdapter;
 import com.example.apptfc.adapters.NeighborAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,10 +32,17 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ApiService apiService;
     private Neighborhood neighborhood;
+
     private NeighborAdapter neighborsAdapter;
-    private TextView tvNeighborhoodName, tvTotalNeighbors;
-    private ListView lvNeighbors;
+    private IncidenceAdapter incidenceAdapter;
+
+    private TextView tvNeighborhoodName, tvTotalNeighbors, tvTotalIncidences;
+    private RecyclerView rvNeighbors, rvIncidences;
     private TabHost tabHost;
+    private SearchView searchView;
+
+    private List<Neighbor> allNeighbors = new ArrayList<>();
+    private List<Incidence> allIncidences = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +52,36 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
         neighborhood = getIntent().getParcelableExtra("NEIGHBORHOOD");
         if (neighborhood == null) {
             Toast.makeText(this, "Error: No se encontraron datos de la comunidad", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
 
         initializeViews();
         setupTabs();
         loadNeighbors();
+        loadIncidences();
+        setupSearch();
     }
 
     private void initializeViews() {
         tvNeighborhoodName = findViewById(R.id.tvNeighborhoodName);
-        lvNeighbors = findViewById(R.id.lvNeighbors);
         tvTotalNeighbors = findViewById(R.id.tvTotalNeighbors);
-        tabHost = findViewById(R.id.tabHost);
+        tvTotalIncidences = findViewById(R.id.tvTotalIncidences);
 
-        neighborhood = getIntent().getParcelableExtra("NEIGHBORHOOD");
-        if (neighborhood == null) {
-            Toast.makeText(this, "Error: Datos no encontrados", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            tvNeighborhoodName.setText(neighborhood.getName());
-        }
+        rvNeighbors = findViewById(R.id.rvNeighbors);
+        rvNeighbors.setLayoutManager(new LinearLayoutManager(this));
+        neighborsAdapter = new NeighborAdapter(new ArrayList<>());
+        rvNeighbors.setAdapter(neighborsAdapter);
+
+        rvIncidences = findViewById(R.id.rvIncidences);
+        rvIncidences.setLayoutManager(new LinearLayoutManager(this));
+        incidenceAdapter = new IncidenceAdapter(new ArrayList<>());
+        rvIncidences.setAdapter(incidenceAdapter);
+
+        tabHost = findViewById(R.id.tabHost);
+        searchView = findViewById(R.id.searchView);
+
+        tvNeighborhoodName.setText(neighborhood.getName());
     }
 
     private void setupTabs() {
@@ -71,56 +92,87 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
         spec.setIndicator("Vecinos");
         tabHost.addTab(spec);
 
+        spec = tabHost.newTabSpec("Incidences");
+        spec.setContent(R.id.tabIncidences);
+        spec.setIndicator("Incidencias");
+        tabHost.addTab(spec);
+    }
+
+    private void setupSearch() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterNeighbors(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filterNeighbors(String text) {
+        List<Neighbor> filteredList = new ArrayList<>();
+        for (Neighbor neighbor : allNeighbors) {
+            if (neighbor.getUser() != null && (
+                    neighbor.getUser().getName().toLowerCase().contains(text.toLowerCase()) ||
+                            neighbor.getUser().getSurname().toLowerCase().contains(text.toLowerCase()))) {
+                filteredList.add(neighbor);
+            }
+        }
+        neighborsAdapter.updateData(filteredList);
     }
 
     private void loadNeighbors() {
-        showLoadingDialog("Cargando vecinos...");
 
         apiService = RetrofitClient.get().create(ApiService.class);
         Call<List<Neighbor>> call = apiService.getNeighborsByNeighborhood(neighborhood.getId());
-        Log.d("LoadNeighbors", "neighborhoodId: " + neighborhood.getId());
 
         call.enqueue(new Callback<List<Neighbor>>() {
             @Override
             public void onResponse(Call<List<Neighbor>> call, Response<List<Neighbor>> response) {
-                Log.d("API Response", "Código: " + response.code() + " - Body: " + response.body());
-                dismissLoadingDialog();
-
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Neighbor> neighbors = response.body();
-                    updateNeighborsList(neighbors);
+                    allNeighbors = response.body();
+                    neighborsAdapter.updateData(allNeighbors);
+                    tvTotalNeighbors.setText("Total: " + allNeighbors.size());
                 } else {
                     showError("Error al cargar vecinos");
+                    Log.e("API_ERROR", "Error response: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Neighbor>> call, Throwable t) {
-                dismissLoadingDialog();
                 showError("Error de conexión: " + t.getMessage());
+                Log.e("API_FAILURE", "Error en la llamada API", t);
             }
         });
     }
 
-    private void updateNeighborsList(List<Neighbor> neighbors) {
-        NeighborAdapter adapter = new NeighborAdapter(this, neighbors);
-        lvNeighbors.setAdapter(adapter);
+    private void loadIncidences() {
 
-        Log.d("updateNeighborsList", String.valueOf(neighbors.size()));
-        tvTotalNeighbors.setText("Total de vecinos: " + neighbors.size());
-    }
+        apiService = RetrofitClient.get().create(ApiService.class);
+        Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(neighborhood.getId());
 
-    private void showLoadingDialog(String message) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(message);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
+        call.enqueue(new Callback<List<Incidence>>() {
+            @Override
+            public void onResponse(Call<List<Incidence>> call, Response<List<Incidence>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    allIncidences = response.body();
+                    incidenceAdapter.updateData(allIncidences);
+                    tvTotalIncidences.setText("Total: " + allIncidences.size());
+                } else {
+                    showError("Error al cargar incidencias");
+                }
+            }
 
-    private void dismissLoadingDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+            @Override
+            public void onFailure(Call<List<Incidence>> call, Throwable t) {
+                showError("Error de conexión: " + t.getMessage());
+            }
+        });
     }
 
     private void showError(String message) {

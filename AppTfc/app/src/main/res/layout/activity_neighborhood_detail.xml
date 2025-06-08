@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context=".Activities.admin.ActivityNeighborhoodDetail">
 
-    <!-- Header -->
+    <!-- Header con nombre de la comunidad -->
     <TextView
         android:id="@+id/tvNeighborhoodName"
         android:layout_width="match_parent"
@@ -16,6 +17,15 @@
         android:textStyle="bold"
         android:background="@color/primaryColor"
         android:textColor="@color/white"/>
+
+    <!-- Barra de búsqueda -->
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:queryHint="Buscar vecinos..."
+        android:iconifiedByDefault="false"/>
 
     <!-- Pestañas -->
     <TabHost
@@ -45,13 +55,39 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ListView
-                        android:id="@+id/lvNeighbors"
+                    <TextView
+                        android:id="@+id/tvTotalNeighbors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textSize="14sp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvNeighbors"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <!-- Pestaña Incidencias -->
+                <LinearLayout
+                    android:id="@+id/tabIncidences"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvTotalIncidences"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textSize="14sp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvIncidences"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:divider="@android:color/transparent"
-                        android:dividerHeight="8dp"/>
-
+                        android:padding="8dp"
+                        android:clipToPadding="false"/>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

@@ -58,5 +58,17 @@
     <color name="community_background">#F5F5F5</color>
     <color name="community_text_primary">#212121</color>
     <color name="community_text_secondary">#757575</color>
+
+    <color name="accentColor">#FF4081</color>
+    <color name="grayLight">#F5F5F5</color>
+    <color name="grayMedium">#9E9E9E</color>
+    <color name="grayDark">#424242</color>
+    <color name="statusPending">#FF9800</color>
+    <color name="statusResolved">#4CAF50</color>
+    <color name="statusRejected">#F44336</color>
+    <color name="priorityLow">#8BC34A</color>
+    <color name="priorityMedium">#FFC107</color>
+    <color name="priorityHigh">#FF5722</color>
+    <color name="background">#FAFAFA</color>
 </resources>
 
