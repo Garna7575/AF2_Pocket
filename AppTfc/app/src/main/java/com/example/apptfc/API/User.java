@@ -1,13 +1,17 @@
 package com.example.apptfc.API;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class User {
+public class User implements Parcelable {
     private int id;
     private String name, username, surname, tlphNumber, password, email, role;
     private Date birthDate;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String name, String surname, String email, String username, String tlphNumber, String password, Date birthDate, String role) {
         this.name = name;
@@ -31,6 +35,28 @@ public class User {
         this.role = role;
         this.birthDate = birthDate;
     }
+
+    protected User(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        username = in.readString();
+        surname = in.readString();
+        tlphNumber = in.readString();
+        email = in.readString();
+        role = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -112,10 +138,24 @@ public class User {
                 ", username='" + username + '\'' +
                 ", surname='" + surname + '\'' +
                 ", tlphNumber='" + tlphNumber + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(username);
+        dest.writeString(surname);
+        dest.writeString(tlphNumber);
+        dest.writeString(email);
     }
 }

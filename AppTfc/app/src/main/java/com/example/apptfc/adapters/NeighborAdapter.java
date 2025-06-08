@@ -1,5 +1,8 @@
 package com.example.apptfc.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.Neighbor;
+import com.example.apptfc.Activities.admin.NeighborDetailActivity;
 import com.example.apptfc.R;
 
 import java.util.List;
@@ -16,7 +20,7 @@ import java.util.List;
 public class NeighborAdapter extends RecyclerView.Adapter<NeighborAdapter.NeighborViewHolder> {
     private List<Neighbor> neighbors;
 
-    public NeighborAdapter(List<Neighbor> neighbors) {
+    public NeighborAdapter(List<Neighbor> neighbors, Context context) {
         this.neighbors = neighbors;
     }
 
@@ -56,7 +60,7 @@ public class NeighborAdapter extends RecyclerView.Adapter<NeighborAdapter.Neighb
         notifyDataSetChanged();
     }
 
-    static class NeighborViewHolder extends RecyclerView.ViewHolder {
+    class NeighborViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvHouse, tvPhone, tvEmail;
 
         public NeighborViewHolder(@NonNull View itemView) {
@@ -65,6 +69,25 @@ public class NeighborAdapter extends RecyclerView.Adapter<NeighborAdapter.Neighb
             tvHouse = itemView.findViewById(R.id.tvNeighborHouse);
             tvPhone = itemView.findViewById(R.id.tvNeighborPhone);
             tvEmail = itemView.findViewById(R.id.tvNeighborEmail);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Neighbor neighbor = neighbors.get(position);
+                        Context context = itemView.getContext();
+                        Intent intent = new Intent(context, NeighborDetailActivity.class);
+                        intent.putExtra("NEIGHBOR", neighbor);
+
+                        if (context instanceof Activity) {
+                            ((Activity) context).startActivityForResult(intent, 1);
+                        } else {
+                            context.startActivity(intent);
+                        }
+                    }
+                }
+            });
         }
     }
 }

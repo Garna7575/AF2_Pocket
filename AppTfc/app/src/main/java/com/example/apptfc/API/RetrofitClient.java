@@ -14,7 +14,7 @@ public class RetrofitClient {
     private static final int TIMEOUT = 60;
 
     private static final Gson gson = new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
             .create();
 
     private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()

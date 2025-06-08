@@ -71,6 +71,9 @@ public interface ApiService {
     @GET("receipts/{id}")
     Call<List<Receipt>> getReceiptsByNeighbor(@Path("id") int id);
 
+    @GET("receipts/pending-receipts/{id}")
+    Call<List<Receipt>> getPendingReceipts(@Path("id") int id);
+
     @POST("incidences/{neighborId}")
     Call<Void> postIncidence(@Path("neighborId") int neighborId, @Body Incidence incidence);
 
@@ -79,6 +82,9 @@ public interface ApiService {
 
     @POST("users/forgot-password")
     Call<Void> forgotPassword(@Body ForgotPassword email);
+
+    @POST("receipts/email")
+    Call<Void> sendPaymentReminderEmail(@Body PaymentEmailDTO dto);
 
     @POST("users/change-password/{id}")
     Call<Void> changePassword(@Body PasswordChangeRequest request, @Path("id") int id);
@@ -101,4 +107,6 @@ public interface ApiService {
     @DELETE("reservations/{id}")
     Call<Void> deleteReservation(@Path("id") int id);
 
+    @DELETE("users/neighbor/{id}")
+    Call<Void> deleteNeighbor(@Path("id") int id);
 }

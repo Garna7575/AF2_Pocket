@@ -1,6 +1,7 @@
 package com.example.apptfc.Activities.admin;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
@@ -68,7 +69,7 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
 
         rvNeighbors = findViewById(R.id.rvNeighbors);
         rvNeighbors.setLayoutManager(new LinearLayoutManager(this));
-        neighborsAdapter = new NeighborAdapter(new ArrayList<>());
+        neighborsAdapter = new NeighborAdapter(new ArrayList<>(), this);
         rvNeighbors.setAdapter(neighborsAdapter);
 
         rvIncidences = findViewById(R.id.rvIncidences);
@@ -175,5 +176,17 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("a", String.valueOf(resultCode));
+
+        if (resultCode == RESULT_OK) {
+            loadNeighbors();
+            loadIncidences();
+        }
     }
 }

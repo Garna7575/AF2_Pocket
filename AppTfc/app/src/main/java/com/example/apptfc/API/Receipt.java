@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,7 +36,7 @@ public class Receipt implements Parcelable {
         dest.writeString(description);
         dest.writeDouble(value);
         dest.writeByte((byte) (paid ? 1 : 0));
-        dest.writeLong(date != null ? date.getTime() : -1); // Guarda como timestamp
+        dest.writeLong(date != null ? date.getTime() : -1);
         dest.writeInt(neighborId);
     }
 
