@@ -32,10 +32,8 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ApiService apiService;
     private Neighborhood neighborhood;
-
     private NeighborAdapter neighborsAdapter;
     private IncidenceAdapter incidenceAdapter;
-
     private TextView tvNeighborhoodName, tvTotalNeighbors, tvTotalIncidences;
     private RecyclerView rvNeighbors, rvIncidences;
     private TabHost tabHost;
