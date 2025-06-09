@@ -95,6 +95,18 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
         spec.setContent(R.id.tabIncidences);
         spec.setIndicator("Incidencias");
         tabHost.addTab(spec);
+
+        searchView.setQueryHint("Buscar vecinos...");
+
+        tabHost.setOnTabChangedListener(tabId -> {
+            if (tabId.equals("Neighbors")) {
+                searchView.setQueryHint("Buscar vecinos...");
+                filterNeighbors(searchView.getQuery().toString());
+            } else if (tabId.equals("Incidences")) {
+                searchView.setQueryHint("Buscar incidencias...");
+                filterIncidences(searchView.getQuery().toString());
+            }
+        });
     }
 
     private void setupSearch() {
@@ -106,7 +118,11 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterNeighbors(newText);
+                if (tabHost.getCurrentTabTag().equals("Neighbors")) {
+                    filterNeighbors(newText);
+                } else if (tabHost.getCurrentTabTag().equals("Incidences")) {
+                    filterIncidences(newText);
+                }
                 return true;
             }
         });
@@ -124,8 +140,17 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
         neighborsAdapter.updateData(filteredList);
     }
 
-    private void loadNeighbors() {
+    private void filterIncidences(String text) {
+        List<Incidence> filteredList = new ArrayList<>();
+        for (Incidence incidence : allIncidences) {
+            if ((incidence.getTitle() != null && incidence.getTitle().toLowerCase().contains(text.toLowerCase()))) {
+                filteredList.add(incidence);
+            }
+        }
+        incidenceAdapter.updateData(filteredList);
+    }
 
+    private void loadNeighbors() {
         apiService = RetrofitClient.get().create(ApiService.class);
         Call<List<Neighbor>> call = apiService.getNeighborsByNeighborhood(neighborhood.getId());
 
@@ -151,7 +176,6 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
     }
 
     private void loadIncidences() {
-
         apiService = RetrofitClient.get().create(ApiService.class);
         Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(neighborhood.getId());
 
@@ -181,8 +205,6 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("a", String.valueOf(resultCode));
 
         if (resultCode == RESULT_OK) {
             loadNeighbors();

@@ -9,19 +9,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.apptfc.API.Admin;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.BookingsActivity;
+import com.example.apptfc.Activities.Neighbor.AnnouncementsActivity;
+import com.example.apptfc.Activities.Neighbor.MainNeighborActivity;
+import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.AdminNeighborhoodAdapter;
 import com.example.apptfc.adapters.NeighborhoodAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +44,7 @@ public class MainAdminActivity extends AppCompatActivity {
     private AdminNeighborhoodAdapter adapter;
     private List<Neighborhood> neighborhoodList = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,26 @@ public class MainAdminActivity extends AppCompatActivity {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Neighborhood selectedNeighborhood = neighborhoodList.get(position);
             openNeighborhoodDetail(selectedNeighborhood);
+        });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+
+                if (item.getItemId() == R.id.nav_home){
+                    startActivity(new Intent(MainAdminActivity.this, MainAdminActivity.class));
+                    return true;
+                } else if (item.getItemId() == R.id.nav_settings){
+                    startActivity(new Intent(MainAdminActivity.this, ProfileActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return true;
+                }
+
+                return false;
+            }
         });
     }
 
