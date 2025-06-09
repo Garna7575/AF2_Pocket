@@ -61,7 +61,16 @@ public class AccountInfoActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        setResult(RESULT_OK);
         onBackPressed();
         return true;
     }
+
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
 }

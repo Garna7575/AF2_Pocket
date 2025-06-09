@@ -22,6 +22,7 @@ import com.example.apptfc.API.Admin;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.AccountInfoActivity;
 import com.example.apptfc.Activities.BookingsActivity;
 import com.example.apptfc.Activities.Neighbor.AnnouncementsActivity;
 import com.example.apptfc.Activities.Neighbor.MainNeighborActivity;
@@ -66,6 +67,7 @@ public class MainAdminActivity extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -76,7 +78,7 @@ public class MainAdminActivity extends AppCompatActivity {
                     startActivity(new Intent(MainAdminActivity.this, MainAdminActivity.class));
                     return true;
                 } else if (item.getItemId() == R.id.nav_settings){
-                    startActivity(new Intent(MainAdminActivity.this, ProfileActivity.class));
+                    startActivityForResult(new Intent(MainAdminActivity.this, AccountInfoActivity.class), 100);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return true;
                 }
@@ -205,5 +207,13 @@ public class MainAdminActivity extends AppCompatActivity {
     public interface AdminCallback {
         void onSuccess(int adminId);
         void onFailure(String errorMessage);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
     }
 }
