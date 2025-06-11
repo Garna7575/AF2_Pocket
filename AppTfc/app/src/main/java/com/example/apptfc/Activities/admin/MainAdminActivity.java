@@ -3,33 +3,21 @@ package com.example.apptfc.Activities.admin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.apptfc.API.Admin;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.Activities.AccountInfoActivity;
-import com.example.apptfc.Activities.BookingsActivity;
-import com.example.apptfc.Activities.Neighbor.AnnouncementsActivity;
-import com.example.apptfc.Activities.Neighbor.MainNeighborActivity;
-import com.example.apptfc.Activities.ProfileActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.AdminNeighborhoodAdapter;
-import com.example.apptfc.adapters.NeighborhoodAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -51,136 +39,104 @@ public class MainAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_admin);
-
-        initializeViews();
-        loadAdminDataAndNeighborhoods();
-    }
-
-    private void initializeViews() {
         listView = findViewById(R.id.neighborhoodsListView);
         adapter = new AdminNeighborhoodAdapter(this, neighborhoodList);
         listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            Neighborhood selectedNeighborhood = neighborhoodList.get(position);
-            openNeighborhoodDetail(selectedNeighborhood);
-        });
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
-
-                if (item.getItemId() == R.id.nav_home){
-                    startActivity(new Intent(MainAdminActivity.this, MainAdminActivity.class));
-                    return true;
-                } else if (item.getItemId() == R.id.nav_settings){
-                    startActivityForResult(new Intent(MainAdminActivity.this, AccountInfoActivity.class), 100);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    return true;
-                }
-
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_home) return true;
+            if (item.getItemId() == R.id.nav_settings) {
+                startActivityForResult(new Intent(this, AccountInfoActivity.class), 100);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
             }
+            return false;
+        });
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if (position < neighborhoodList.size()) {
+                Intent intent = new Intent(this, ActivityNeighborhoodDetail.class);
+                intent.putExtra("NEIGHBORHOOD", neighborhoodList.get(position));
+                startActivity(intent);
+            } else {
+                startActivityForResult(new Intent(this, AddNeighborhoodActivity.class), 101);
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override public void onScrollStateChanged(AbsListView view, int scrollState) { }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                updateFabVisibility();
+            }
+        });
+
+        findViewById(R.id.fabAddCommunity).setOnClickListener(v -> {
+            startActivityForResult(new Intent(this, AddNeighborhoodActivity.class), 101);
+        });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override public void onScrollStateChanged(AbsListView view, int scrollState) {}
+            @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                updateFabVisibility();
+            }
+        });
+        loadAdminDataAndNeighborhoods();
+    }
+
+    private void updateFabVisibility() {
+        listView.post(() -> {
+            boolean canScroll = listView.canScrollVertically(1);
+            View fab = findViewById(R.id.fabAddCommunity);
+
+            fab.setVisibility(canScroll ? View.VISIBLE : View.GONE);
+            adapter.setShowAddItem(!canScroll);
         });
     }
 
-    private void openNeighborhoodDetail(Neighborhood neighborhood) {
-        Intent intent = new Intent(this, ActivityNeighborhoodDetail.class);
-        intent.putExtra("NEIGHBORHOOD", neighborhood);
-        startActivity(intent);
-    }
 
     private void loadAdminDataAndNeighborhoods() {
-        showLoading("Cargando datos del administrador...");
-
+        showLoading("Cargando datos...");
         SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         int userId = prefs.getInt("id", -1);
-
-        Log.d("MainAdminActivity", "Llamando getAdminByUserId con userId=" + userId);
-        getAdminByUserId(userId, new AdminCallback() {
-            @Override
-            public void onSuccess(int adminId) {
-                // Guardar el adminId en SharedPreferences
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("adminId", adminId);
-                editor.apply();
-
-                loadAdminNeighborhoods();
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                hideLoading();
-                showError(errorMessage);
-                finish();
-            }
-        });
-    }
-
-    private void getAdminByUserId(int userId, AdminCallback callback) {
-        ApiService apiService = RetrofitClient.get().create(ApiService.class);
-        Call<Admin> call = apiService.getAdminByUserId(userId);
-
-        call.enqueue(new Callback<Admin>() {
-            @Override
-            public void onResponse(Call<Admin> call, Response<Admin> response) {
-                Log.d("getAdminByUserId", "Código de respuesta: " + response.code());
+        RetrofitClient.get().create(ApiService.class).getAdminByUserId(userId).enqueue(new Callback<Admin>() {
+            @Override public void onResponse(Call<Admin> call, Response<Admin> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Admin admin = response.body();
-                    Log.d("getAdminByUserId", "Admin recibido: " + admin.getId());
-                    callback.onSuccess(admin.getId());
+                    prefs.edit().putInt("adminId", response.body().getId()).apply();
+                    loadAdminNeighborhoods();
                 } else {
-                    Log.e("getAdminByUserId", "Respuesta no exitosa o admin null");
-                    callback.onFailure("No se pudo obtener el administrador");
+                    hideLoading();
+                    showError("Error al obtener administrador");
                 }
             }
-
-            @Override
-            public void onFailure(Call<Admin> call, Throwable t) {
-                Log.e("getAdminByUserId", "Error en la llamada: " + t.getMessage());
-                callback.onFailure("Error de conexión: " + t.getMessage());
+            @Override public void onFailure(Call<Admin> call, Throwable t) {
+                hideLoading();
+                showError("Error de conexión: " + t.getMessage());
             }
-
         });
     }
 
     private void loadAdminNeighborhoods() {
-        showLoading("Cargando comunidades...");
-
         int adminId = getSharedPreferences("UserData", MODE_PRIVATE).getInt("adminId", -1);
         if (adminId == -1) {
             hideLoading();
-            showError("Administrador no identificado");
+            showError("Admin no identificado");
             return;
         }
-
-        ApiService apiService = RetrofitClient.get().create(ApiService.class);
-        apiService.getNeighborhoodByAdminId(adminId).enqueue(new Callback<List<Neighborhood>>() {
-            @Override
-            public void onResponse(Call<List<Neighborhood>> call, Response<List<Neighborhood>> response) {
+        RetrofitClient.get().create(ApiService.class).getNeighborhoodByAdminId(adminId).enqueue(new Callback<List<Neighborhood>>() {
+            @Override public void onResponse(Call<List<Neighborhood>> call, Response<List<Neighborhood>> response) {
                 hideLoading();
-
                 if (response.isSuccessful() && response.body() != null) {
                     neighborhoodList.clear();
                     neighborhoodList.addAll(response.body());
-
-
                     adapter.notifyDataSetChanged();
+                    updateFabVisibility();
                 } else {
                     showError("Error al cargar comunidades");
-                    Log.e("API Error", "Código: " + response.code());
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<Neighborhood>> call, Throwable t) {
+            @Override public void onFailure(Call<List<Neighborhood>> call, Throwable t) {
                 hideLoading();
                 showError("Error de conexión: " + t.getMessage());
-                Log.e("API Error", "Error: " + t.getMessage());
             }
         });
     }
@@ -204,16 +160,11 @@ public class MainAdminActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    public interface AdminCallback {
-        void onSuccess(int adminId);
-        void onFailure(String errorMessage);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        if (requestCode == 101) {
+            loadAdminNeighborhoods();
         }
     }
 }

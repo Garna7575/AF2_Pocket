@@ -95,6 +95,9 @@ public interface ApiService {
     @POST("reservations")
     Call<Void> createReservation(@Body PostAreaReservation reservation);
 
+    @POST("neighborhood")
+    Call<Void> sendNeighborhoodCreationRequest(@Body creationNeighborhoods request);
+
     @PUT("users/{id}")
     Call<Void> updateUser(@Body User user, @Path("id") int id);
 

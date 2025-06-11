@@ -36,7 +36,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     public interface OnReservationActionListener {
         void onReservationDeleted();
-        void onReservationEdit(Reservation reservation);
     }
 
     public ReservationAdapter(List<Reservation> reservations, Context context, OnReservationActionListener listener) {
@@ -70,12 +69,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         holder.itemView.setOnClickListener(v -> {
             expandedPosition = isExpanded ? -1 : position;
             notifyDataSetChanged();
-        });
-
-        holder.btnEdit.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onReservationEdit(reservation);
-            }
         });
 
         holder.btnDelete.setOnClickListener(v -> {
@@ -121,14 +114,13 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     static class ReservationViewHolder extends RecyclerView.ViewHolder {
         private TextView tvZoneName, tvTime;
         private LinearLayout buttonsLayout;
-        private Button btnEdit, btnDelete;
+        private Button btnDelete;
 
         public ReservationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvZoneName = itemView.findViewById(R.id.tvZoneName);
             tvTime = itemView.findViewById(R.id.tvTime);
             buttonsLayout = itemView.findViewById(R.id.buttonsLayout);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 

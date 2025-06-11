@@ -1,11 +1,6 @@
 package com.example.apptfc.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,85 +10,116 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.R;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class AdminNeighborhoodAdapter extends ArrayAdapter<Neighborhood> {
 
+    private static final int TYPE_NEIGHBORHOOD = 0;
+    private static final int TYPE_ADD_ITEM = 1;
+    private boolean showAddItem = false;
+
     public AdminNeighborhoodAdapter(@NonNull Context context, List<Neighborhood> neighborhoods) {
         super(context, 0, neighborhoods);
     }
 
-    private static class ViewHolder {
-        ImageView imageView;
-        TextView nameView;
-        TextView recordsView;
+    public void setShowAddItem(boolean show) {
+        this.showAddItem = show;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+        return super.getCount() + (showAddItem ? 1 : 0);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (showAddItem && position == getRegularItemCount()) ? TYPE_ADD_ITEM : TYPE_NEIGHBORHOOD;
+    }
+
+    private int getRegularItemCount() {
+        return super.getCount();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
+        if (getItemViewType(position) == TYPE_ADD_ITEM) {
+            return createAddItemView(convertView, parent);
+        }
+        return createNeighborhoodView(position, convertView, parent);
+    }
 
+    private View createNeighborhoodView(int position, View convertView, ViewGroup parent) {
+        NeighborhoodViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.item_neighborhood, parent, false);
-            holder = new ViewHolder();
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_neighborhood, parent, false);
+            holder = new NeighborhoodViewHolder();
             holder.imageView = convertView.findViewById(R.id.neighborhoodImage);
             holder.nameView = convertView.findViewById(R.id.neighborhoodName);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (NeighborhoodViewHolder) convertView.getTag();
         }
 
         Neighborhood neighborhood = getItem(position);
-
         if (neighborhood != null) {
             holder.nameView.setText(neighborhood.getName());
-
-            int recordsCount = neighborhood.getRecords() != null ? neighborhood.getRecords().size() : 0;
-
-            // Carga condicional de imagen
-            if (neighborhood.getImage() != null) {
-                loadImage(neighborhood.getImage(), holder.imageView);
-            } else {
-                holder.imageView.setImageResource(R.drawable.placeholder_neighborhood);
-            }
+            loadImage(neighborhood.getImage(), holder.imageView);
         }
 
         return convertView;
     }
 
-    private void loadImage(String base64Image, ImageView imageView) {
-        new AsyncTask<String, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(String... strings) {
-                try {
-                    String imageData = strings[0];
-                    // Elimina el prefijo si existe (ej: "data:image/png;base64,")
-                    if (imageData.contains(",")) {
-                        imageData = imageData.split(",")[1];
-                    }
+    private View createAddItemView(View convertView, ViewGroup parent) {
+        AddItemViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_add_neighborhood, parent, false);
+            holder = new AddItemViewHolder();
+            holder.addIcon = convertView.findViewById(R.id.addIcon);
+            holder.addText = convertView.findViewById(R.id.addText);
+            convertView.setTag(holder);
+        } else {
+            holder = (AddItemViewHolder) convertView.getTag();
+        }
 
-                    byte[] imageBytes = Base64.decode(imageData, Base64.DEFAULT);
-                    return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                } catch (Exception e) {
-                    Log.e("ImageLoad", "Error decoding image: " + e.getMessage());
-                    return null;
-                }
-            }
+        holder.addText.setText("Agregar comunidad");
+        holder.addIcon.setImageResource(R.drawable.ic_add);
+        holder.addIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.teal_700));
 
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
-                } else {
-                    imageView.setImageResource(R.drawable.placeholder_neighborhood);
-                }
-            }
-        }.execute(base64Image);
+        return convertView;
+    }
+
+    private void loadImage(String imageUrl, ImageView imageView) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(getContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.placeholder_neighborhood)
+                    .error(R.drawable.placeholder_neighborhood)
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.placeholder_neighborhood);
+        }
+    }
+
+    private static class NeighborhoodViewHolder {
+        ImageView imageView;
+        TextView nameView;
+    }
+
+    private static class AddItemViewHolder {
+        ImageView addIcon;
+        TextView addText;
     }
 }

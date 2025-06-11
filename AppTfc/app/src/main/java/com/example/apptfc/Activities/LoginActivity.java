@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements com.example.appt
         editor.putString("username", user.getUsername());
         editor.putString("birthDate", user.getBirthDate().toString());
         editor.putString("tlphNumber", user.getTlphNumber());
+        editor.putString("role", user.getRole());
         editor.apply();
     }
 }

@@ -149,28 +149,6 @@ public class BookingsActivity extends AppCompatActivity implements ReservationAd
         }
     }
 
-    @Override
-    public void onReservationEdit(Reservation reservation) {
-        Intent intent = new Intent(this, AddReservation.class);
-        intent.putExtra("editMode", true);
-        intent.putExtra("reservationId", reservation.getId());
-        intent.putExtra("commonAreaId", reservation.getCommonArea().getId());
-        intent.putExtra("commonAreaName", reservation.getCommonArea().getName());
-        intent.putExtra("startTime", reservation.getStartTime());
-        intent.putExtra("endTime", reservation.getEndTime());
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            Date date = sdf.parse(reservation.getStartTime());
-            intent.putExtra("selectedDate", date.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            intent.putExtra("selectedDate", Calendar.getInstance().getTimeInMillis());
-        }
-
-        startActivity(intent);
-    }
-
     private void loadReservationsForDate(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         String formattedDate = sdf.format(calendar.getTime());
