@@ -2,6 +2,7 @@ package com.example.apptfc.Activities.admin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
@@ -18,9 +19,11 @@ import com.example.apptfc.API.Incidence;
 import com.example.apptfc.API.Neighbor;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.AccountInfoActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
 import com.example.apptfc.adapters.NeighborAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,40 +32,44 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityNeighborhoodDetail extends AppCompatActivity {
+public class NeighborhoodDetailActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
     private ProgressDialog progressDialog;
     private ApiService apiService;
-    private Neighborhood neighborhood;
     private NeighborAdapter neighborsAdapter;
     private IncidenceAdapter incidenceAdapter;
     private TextView tvNeighborhoodName, tvTotalNeighbors, tvTotalIncidences;
     private RecyclerView rvNeighbors, rvIncidences;
     private TabHost tabHost;
     private SearchView searchView;
-
     private List<Neighbor> allNeighbors = new ArrayList<>();
     private List<Incidence> allIncidences = new ArrayList<>();
+    private BottomNavigationView bottomNavigationView;
+    private int neighborhoodId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighborhood_detail);
 
-        neighborhood = getIntent().getParcelableExtra("NEIGHBORHOOD");
-        if (neighborhood == null) {
+        initializeViews();
+        if (sharedPreferences.getInt("neighborhoodId", -1) == -1) {
             Toast.makeText(this, "Error: No se encontraron datos de la comunidad", Toast.LENGTH_SHORT).show();
             finish();
             return;
+        } else{
+            neighborhoodId = sharedPreferences.getInt("neighborhoodId", -1);
         }
-
-        initializeViews();
         setupTabs();
+        setupBottomNavigation();
         loadNeighbors();
         loadIncidences();
         setupSearch();
     }
 
     private void initializeViews() {
+        sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
         tvNeighborhoodName = findViewById(R.id.tvNeighborhoodName);
         tvTotalNeighbors = findViewById(R.id.tvTotalNeighbors);
         tvTotalIncidences = findViewById(R.id.tvTotalIncidences);
@@ -80,9 +87,8 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
         tabHost = findViewById(R.id.tabHost);
         searchView = findViewById(R.id.searchView);
 
-        tvNeighborhoodName.setText(neighborhood.getName());
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
-
     private void setupTabs() {
         tabHost.setup();
 
@@ -106,6 +112,26 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
                 searchView.setQueryHint("Buscar incidencias...");
                 filterIncidences(searchView.getQuery().toString());
             }
+        });
+    }
+
+    private void setupBottomNavigation(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_home) return true;
+            if (item.getItemId() == R.id.nav_settings) {
+                startActivityForResult(new Intent(this, AccountInfoActivity.class), 100);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (item.getItemId() == R.id.nav_records) {
+                startActivity(new Intent(this, VotesRecordsActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (item.getItemId() == R.id.nav_commonAreas){
+//                startActivity(new Intent(this, CommonAreasActivity.class));
+//                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                return true;
+            }
+            return false;
         });
     }
 
@@ -152,8 +178,8 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
 
     private void loadNeighbors() {
         apiService = RetrofitClient.get().create(ApiService.class);
-        Call<List<Neighbor>> call = apiService.getNeighborsByNeighborhood(neighborhood.getId());
-
+        Call<List<Neighbor>> call = apiService.getNeighborsByNeighborhood(neighborhoodId);
+        Log.e("a", String.valueOf(neighborhoodId));
         call.enqueue(new Callback<List<Neighbor>>() {
             @Override
             public void onResponse(Call<List<Neighbor>> call, Response<List<Neighbor>> response) {
@@ -177,7 +203,7 @@ public class ActivityNeighborhoodDetail extends AppCompatActivity {
 
     private void loadIncidences() {
         apiService = RetrofitClient.get().create(ApiService.class);
-        Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(neighborhood.getId());
+        Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(neighborhoodId);
 
         call.enqueue(new Callback<List<Incidence>>() {
             @Override

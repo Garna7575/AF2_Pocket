@@ -5,6 +5,14 @@
         android:icon="@drawable/ic_home"
         android:title="Comunidades"/>
     <item
+        android:id="@+id/nav_records"
+        android:icon="@drawable/ic_vote"
+        android:title="Actas y votaciones"/>
+    <item
+        android:id="@+id/nav_commonAreas"
+        android:icon="@drawable/ic_bookings"
+        android:title="Áreas comunes"/>
+    <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="Ajustes"/>

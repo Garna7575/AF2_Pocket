@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class Record implements Parcelable {
     private int id;
-    private String name;
+    private String title;
     private String description;
 
     @SerializedName("date")
@@ -24,7 +24,7 @@ public class Record implements Parcelable {
             new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
     public int getId() { return id; }
-    public String getName() { return name; }
+    public String getTitle() { return title; }
     public String getDescription() { return description; }
 
     public String getFormattedDate() {
@@ -44,7 +44,7 @@ public class Record implements Parcelable {
 
     protected Record(Parcel in) {
         id = in.readInt();
-        name = in.readString();
+        title = in.readString();
         description = in.readString();
         dateString = in.readString();
     }
@@ -52,7 +52,7 @@ public class Record implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(name);
+        dest.writeString(title);
         dest.writeString(description);
         dest.writeString(dateString);
     }

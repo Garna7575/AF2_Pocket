@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_vote_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white"
+    tools:context=".Activities.admin.VoteDetailsActivity">
+
+    <!-- Título de la votación -->
+    <TextView
+        android:id="@+id/txtVoteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detalles de la votación"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="16dp"/>
+
+    <!-- Resultados -->
+    <TextView
+        android:id="@+id/txtFavor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A favor: --"
+        android:textSize="16sp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txtContra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="En contra: --"
+        android:textSize="16sp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: --"
+        android:textSize="16sp"
+        android:paddingBottom="24dp"/>
+
+    <!-- Botón para terminar votación -->
+    <Button
+        android:id="@+id/btnEndVote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terminar votación"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

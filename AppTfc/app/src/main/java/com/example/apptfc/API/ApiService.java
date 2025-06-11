@@ -53,6 +53,12 @@ public interface ApiService {
     @GET("vote/by-user/{userId}")
     Call<List<Vote>> getVotesByUser(@Path("userId") int userId);
 
+    @GET("vote/{neighborhoodId}")
+    Call<List<Vote>> getVotesByNeighborhoodId(@Path("neighborhoodId") int neighborhoodId);
+
+    @GET("votes/{voteId}")
+    Call<VoteResult> getVotesResult(@Path("voteId") int voteId);
+
     @GET("records/{neighborhoodId}")
     Call<List<Record>> getRecords(@Path("neighborhoodId") int neighborhoodId);
 
@@ -91,6 +97,9 @@ public interface ApiService {
 
     @POST("votes/vote/{neighborId}/{voteId}/{inFavor}")
     Call<ResponseBody> vote(@Path("neighborId") int neighborId, @Path("voteId") int voteId, @Path("inFavor") boolean inFavor);
+
+    @POST("votes/end_voting/{voteId}")
+    Call<ResponseBody> endVote(@Path("voteId") int voteId);
 
     @POST("reservations")
     Call<Void> createReservation(@Body PostAreaReservation reservation);

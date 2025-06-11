@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainAdminActivity extends AppCompatActivity {
-
+    private SharedPreferences sharedPreferences;
     private ListView listView;
     private AdminNeighborhoodAdapter adapter;
     private List<Neighborhood> neighborhoodList = new ArrayList<>();
@@ -39,9 +37,11 @@ public class MainAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_admin);
+        sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
         listView = findViewById(R.id.neighborhoodsListView);
         adapter = new AdminNeighborhoodAdapter(this, neighborhoodList);
         listView.setAdapter(adapter);
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -53,53 +53,27 @@ public class MainAdminActivity extends AppCompatActivity {
             }
             return false;
         });
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (position < neighborhoodList.size()) {
-                Intent intent = new Intent(this, ActivityNeighborhoodDetail.class);
-                intent.putExtra("NEIGHBORHOOD", neighborhoodList.get(position));
-                startActivity(intent);
-            } else {
-                startActivityForResult(new Intent(this, AddNeighborhoodActivity.class), 101);
-            }
-        });
 
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override public void onScrollStateChanged(AbsListView view, int scrollState) { }
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                updateFabVisibility();
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(this, NeighborhoodDetailActivity.class);
+            sharedPreferences.edit().putInt("neighborhoodId", neighborhoodList.get(position).getId()).apply();
+            startActivity(intent);
         });
 
         findViewById(R.id.fabAddCommunity).setOnClickListener(v -> {
             startActivityForResult(new Intent(this, AddNeighborhoodActivity.class), 101);
         });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override public void onScrollStateChanged(AbsListView view, int scrollState) {}
-            @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                updateFabVisibility();
-            }
-        });
+
         loadAdminDataAndNeighborhoods();
     }
-
-    private void updateFabVisibility() {
-        listView.post(() -> {
-            boolean canScroll = listView.canScrollVertically(1);
-            View fab = findViewById(R.id.fabAddCommunity);
-
-            fab.setVisibility(canScroll ? View.VISIBLE : View.GONE);
-            adapter.setShowAddItem(!canScroll);
-        });
-    }
-
 
     private void loadAdminDataAndNeighborhoods() {
         showLoading("Cargando datos...");
         SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         int userId = prefs.getInt("id", -1);
         RetrofitClient.get().create(ApiService.class).getAdminByUserId(userId).enqueue(new Callback<Admin>() {
-            @Override public void onResponse(Call<Admin> call, Response<Admin> response) {
+            @Override
+            public void onResponse(Call<Admin> call, Response<Admin> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     prefs.edit().putInt("adminId", response.body().getId()).apply();
                     loadAdminNeighborhoods();
@@ -108,7 +82,9 @@ public class MainAdminActivity extends AppCompatActivity {
                     showError("Error al obtener administrador");
                 }
             }
-            @Override public void onFailure(Call<Admin> call, Throwable t) {
+
+            @Override
+            public void onFailure(Call<Admin> call, Throwable t) {
                 hideLoading();
                 showError("Error de conexión: " + t.getMessage());
             }
@@ -123,18 +99,20 @@ public class MainAdminActivity extends AppCompatActivity {
             return;
         }
         RetrofitClient.get().create(ApiService.class).getNeighborhoodByAdminId(adminId).enqueue(new Callback<List<Neighborhood>>() {
-            @Override public void onResponse(Call<List<Neighborhood>> call, Response<List<Neighborhood>> response) {
+            @Override
+            public void onResponse(Call<List<Neighborhood>> call, Response<List<Neighborhood>> response) {
                 hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     neighborhoodList.clear();
                     neighborhoodList.addAll(response.body());
                     adapter.notifyDataSetChanged();
-                    updateFabVisibility();
                 } else {
                     showError("Error al cargar comunidades");
                 }
             }
-            @Override public void onFailure(Call<List<Neighborhood>> call, Throwable t) {
+
+            @Override
+            public void onFailure(Call<List<Neighborhood>> call, Throwable t) {
                 hideLoading();
                 showError("Error de conexión: " + t.getMessage());
             }
@@ -163,6 +141,7 @@ public class MainAdminActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
         if (requestCode == 101) {
             loadAdminNeighborhoods();
         }

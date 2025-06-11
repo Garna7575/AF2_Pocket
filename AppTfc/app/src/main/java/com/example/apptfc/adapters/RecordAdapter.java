@@ -38,8 +38,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Record record = records.get(position);
 
-        holder.recordTitle.setText(record.getName() != null ?
-                record.getName() : "Sin título");
+        holder.recordTitle.setText(record.getTitle() != null ?
+                record.getTitle() : "Sin título");
 
         holder.recordDate.setText("Publicado: " + record.getFormattedDate());
 

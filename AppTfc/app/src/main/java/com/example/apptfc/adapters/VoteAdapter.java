@@ -1,8 +1,5 @@
 package com.example.apptfc.adapters;
 
-import static android.content.Context.MODE_PRIVATE;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.API.Vote;
-import com.example.apptfc.Activities.LoginActivity;
-import com.example.apptfc.Activities.RegisterActivity;
 import com.example.apptfc.R;
 
 import java.io.IOException;
@@ -34,12 +29,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder> {
+
     private List<Vote> voteList;
     private Context context;
+    private boolean showVoteButton;
 
-    public VoteAdapter(List<Vote> voteList, Context context) {
+    public VoteAdapter(List<Vote> voteList, Context context, boolean showVoteButton) {
         this.voteList = voteList;
         this.context = context;
+        this.showVoteButton = showVoteButton;
     }
 
     @NonNull
@@ -53,10 +51,21 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
     public void onBindViewHolder(@NonNull VoteViewHolder holder, int position) {
         Vote vote = voteList.get(position);
         Log.d("voteBindViewHolder", vote.toString());
+
         holder.voteTitle.setText(vote.getName());
         holder.voteDescription.setText(vote.getDescription());
 
-        holder.btnVote.setOnClickListener(v -> showVoteOptionsDialog(vote));
+        if (showVoteButton) {
+            holder.btnVote.setVisibility(View.VISIBLE);
+            holder.btnVote.setOnClickListener(v -> showVoteOptionsDialog(vote));
+        } else {
+            holder.btnVote.setVisibility(View.GONE);
+            holder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(context, com.example.apptfc.Activities.admin.VoteDetailActivity.class);
+                intent.putExtra("voteId", vote.getId());
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override
@@ -119,7 +128,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
                     }
                 } else {
                     try {
-                        String responseText = response.body().string();
+                        String responseText = response.errorBody().string();
                         Toast.makeText(context, responseText, Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -132,7 +141,5 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.VoteViewHolder
                 Toast.makeText(context, "Error en la conexión", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 }

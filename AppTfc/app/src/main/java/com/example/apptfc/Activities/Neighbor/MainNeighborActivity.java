@@ -78,7 +78,7 @@ public class MainNeighborActivity extends AppCompatActivity {
 
         voteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        voteAdapter = new VoteAdapter(votes, this);
+        voteAdapter = new VoteAdapter(votes, this, true);
         voteRecyclerView.setAdapter(voteAdapter);
 
         voteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
