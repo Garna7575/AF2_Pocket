@@ -47,7 +47,6 @@ public class AddReservation extends AppCompatActivity {
     private int startHour = 9, startMinute = 0;
     private int endHour = 10, endMinute = 0;
     private SharedPreferences prefs;
-    private boolean isEditMode = false;
     private int reservationId = -1;
 
     @Override
@@ -73,20 +72,10 @@ public class AddReservation extends AppCompatActivity {
         setupRecyclerView();
         loadCommonAreas();
 
-        // Verificar si estamos en modo edición
-        isEditMode = getIntent().getBooleanExtra("editMode", false);
-        if (isEditMode) {
-            setupEditMode();
-        }
-
         MaterialButton actionButton = findViewById(R.id.btnCreateReservation);
-        actionButton.setText(isEditMode ? "Actualizar Reserva" : "Crear Reserva");
+        actionButton.setText("Crear Reserva");
         actionButton.setOnClickListener(v -> {
-            if (isEditMode) {
-                updateReservation();
-            } else {
-                createReservation();
-            }
+            createReservation();
         });
     }
 
@@ -206,20 +195,8 @@ public class AddReservation extends AppCompatActivity {
                             availableCommonAreas = response.body();
                             Collections.sort(availableCommonAreas, (a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
                             checkAvailability();
-
-                            if (isEditMode && selectedArea != null) {
-                                for (int i = 0; i < availableCommonAreas.size(); i++) {
-                                    if (availableCommonAreas.get(i).getId() == selectedArea.getId()) {
-                                        rvCommonAreas.scrollToPosition(i);
-                                        adapter.setSelectedPosition(i);
-                                        break;
-                                    }
-                                }
-                            }
                         } else {
-                            Toast.makeText(AddReservation.this,
-                                    "Error al cargar zonas",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddReservation.this, "Error al cargar zonas", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -351,7 +328,7 @@ public class AddReservation extends AppCompatActivity {
         }
 
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(isEditMode ? "Actualizando reserva..." : "Creando reserva...");
+        progressDialog.setMessage("Creando reserva...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -366,21 +343,14 @@ public class AddReservation extends AppCompatActivity {
         reservation.setNeighborId(neighborId);
 
         ApiService apiService = RetrofitClient.get().create(ApiService.class);
-        Call<Void> call;
-
-        if (isEditMode) {
-            reservation.setId(reservationId);
-            call = apiService.updateReservation(reservationId, reservation);
-        } else {
-            call = apiService.createReservation(reservation);
-        }
+        Call<Void> call = apiService.createReservation(reservation);
 
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    String message = isEditMode ? "Reserva actualizada con éxito" : "Reserva creada con éxito";
+                    String message = "Reserva creada con éxito";
                     showSuccess(message);
                 } else {
                     try {

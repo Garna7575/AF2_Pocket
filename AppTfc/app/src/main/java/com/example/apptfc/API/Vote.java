@@ -4,6 +4,8 @@ public class Vote {
     private int id;
     private String title, description;
 
+    private int neighborhoodId;
+
     public int getId() {
         return id;
     }
@@ -28,12 +30,29 @@ public class Vote {
         this.description = description;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getNeighborhoodId() {
+        return neighborhoodId;
+    }
+
+    public void setNeighborhoodId(int neighborhoodId) {
+        this.neighborhoodId = neighborhoodId;
+    }
+
     @Override
     public String toString() {
         return "Vote{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", neighborhoodId=" + neighborhoodId +
                 '}';
     }
 }

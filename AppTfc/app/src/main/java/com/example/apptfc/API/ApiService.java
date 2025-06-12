@@ -3,13 +3,17 @@ package com.example.apptfc.API;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -101,18 +105,27 @@ public interface ApiService {
     @POST("votes/end_voting/{voteId}")
     Call<ResponseBody> endVote(@Path("voteId") int voteId);
 
+    @POST("vote/create")
+    Call<Void> createVote(@Body Vote vote);
+
     @POST("reservations")
     Call<Void> createReservation(@Body PostAreaReservation reservation);
 
     @POST("neighborhood")
     Call<Void> sendNeighborhoodCreationRequest(@Body creationNeighborhoods request);
 
+    @Multipart
+    @POST("records/upload")
+    Call<Void> uploadRecord(
+            @Part("name") RequestBody name,
+            @Part("description") RequestBody description,
+            @Part("date") RequestBody date,
+            @Part MultipartBody.Part file,
+            @Part("neighborhoodId") RequestBody neighborhoodId
+    );
+
     @PUT("users/{id}")
     Call<Void> updateUser(@Body User user, @Path("id") int id);
-
-    @PUT("reservations/{id}")
-    Call<Void> updateReservation(@Path("id") int id, @Body PostAreaReservation reservation);
-
     @PUT("receipts/payment/{id}")
     Call<Void> payment(@Path("id") int id);
 

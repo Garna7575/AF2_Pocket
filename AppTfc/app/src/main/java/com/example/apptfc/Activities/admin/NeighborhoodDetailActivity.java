@@ -20,6 +20,7 @@ import com.example.apptfc.API.Neighbor;
 import com.example.apptfc.API.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.Activities.AccountInfoActivity;
+import com.example.apptfc.Activities.PersonalInfoActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
 import com.example.apptfc.adapters.NeighborAdapter;

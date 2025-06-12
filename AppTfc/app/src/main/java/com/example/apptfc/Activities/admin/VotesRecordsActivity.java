@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apptfc.Activities.AccountInfoActivity;
+import com.example.apptfc.Activities.admin.AddRecordActivity;
+
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.Record;
 import com.example.apptfc.API.RetrofitClient;
@@ -159,7 +162,7 @@ public class VotesRecordsActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.nav_records) {
                 return true;
             } else if (item.getItemId() == R.id.nav_settings) {
-                startActivity(new Intent(this, ProfileActivity.class));
+                startActivity(new Intent(this, AccountInfoActivity.class));
                 return true;
             }
             return false;
