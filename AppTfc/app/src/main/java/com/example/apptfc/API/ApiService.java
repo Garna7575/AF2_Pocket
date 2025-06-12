@@ -108,6 +108,9 @@ public interface ApiService {
     @POST("vote/create")
     Call<Void> createVote(@Body Vote vote);
 
+    @POST("common-area")
+    Call<Void> createCommonArea(@Body CommonArea commonArea);
+
     @POST("reservations")
     Call<Void> createReservation(@Body PostAreaReservation reservation);
 

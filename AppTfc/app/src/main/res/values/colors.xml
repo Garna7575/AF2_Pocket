@@ -70,5 +70,7 @@
     <color name="priorityMedium">#FFC107</color>
     <color name="priorityHigh">#FF5722</color>
     <color name="background">#FAFAFA</color>
+
+    <color name="background_dark">#1C1B1F</color>
 </resources>
 

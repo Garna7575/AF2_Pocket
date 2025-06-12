@@ -55,4 +55,9 @@
         <item quantity="one">%d documento</item>
         <item quantity="other">%d documentos</item>
     </plurals>
+    <string name="empty_state">Estado vacío</string>
+    <string name="no_common_areas">No hay áreas comunes</string>
+    <string name="add_first_common_area">Presiona el botón para agregar la primera</string>
+    <string name="add_common_area">Agregar área común</string>
+    <string name="add_area">Agregar</string>
 </resources>

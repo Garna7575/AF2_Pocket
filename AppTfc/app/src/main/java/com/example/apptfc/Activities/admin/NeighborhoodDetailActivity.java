@@ -128,9 +128,9 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
             } else if (item.getItemId() == R.id.nav_commonAreas){
-//                startActivity(new Intent(this, CommonAreasActivity.class));
-//                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//                return true;
+                startActivity(new Intent(this, CommonAreasActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
             }
             return false;
         });
