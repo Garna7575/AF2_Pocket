@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.CommonArea;
+import com.example.apptfc.API.models.CommonArea;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.adapters.CommonAreaAdapter;
 import com.example.apptfc.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -27,27 +28,33 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CommonAreasActivity extends AppCompatActivity implements CommonAreaAdapter.OnAreaSelectedListener {
-
     private RecyclerView recyclerView;
     private CommonAreaAdapter adapter;
     private List<CommonArea> commonAreas = new ArrayList<>();
     private ProgressDialog progressDialog;
     private FloatingActionButton fabAddArea;
+    private BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common_areas);
 
-        recyclerView = findViewById(R.id.recyclerCommonAreas);
-        fabAddArea = findViewById(R.id.fabAddCommonArea);
+        setupViews();
 
         setupRecyclerView();
         loadCommonAreas();
+        setupBottomNavigation();
 
         fabAddArea.setOnClickListener(v -> {
             startActivity(new Intent(this, AddCommonAreaActivity.class));
         });
+    }
+
+    private void setupViews() {
+        recyclerView = findViewById(R.id.recyclerCommonAreas);
+        fabAddArea = findViewById(R.id.fabAddCommonArea);
+        bottomNav = findViewById(R.id.bottomNavigationView);
     }
 
     private void setupRecyclerView() {
@@ -56,13 +63,35 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
         recyclerView.setAdapter(adapter);
     }
 
+    private void setupBottomNavigation() {
+        bottomNav.setSelectedItemId(R.id.nav_commonAreas);
+
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_home) {
+                startActivity(new Intent(this, NeighborhoodDetailActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
+            } else if (item.getItemId() == R.id.nav_records) {
+                startActivity(new Intent(this, VotesRecordsActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                return true;
+            } else if (item.getItemId() == R.id.nav_settings) {
+                return true;
+            } else if (item.getItemId() == R.id.nav_commonAreas) {
+                startActivity(new Intent(this, CommonAreasActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            }
+            return false;
+        });
+    }
+
     private void loadCommonAreas() {
 
         SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         int neighborhoodId = prefs.getInt("neighborhoodId", -1);
 
         if (neighborhoodId == -1) {
-            hideLoading();
             Toast.makeText(this, "Error al identificar la comunidad", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -90,7 +119,6 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
 
             @Override
             public void onFailure(Call<List<CommonArea>> call, Throwable t) {
-                hideLoading();
                 Log.e("API_FAILURE", "Excepción: ", t);
                 Toast.makeText(CommonAreasActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
             }
@@ -107,18 +135,5 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
     protected void onResume() {
         super.onResume();
         loadCommonAreas();
-    }
-
-    private void showLoading(String message) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(message);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
-
-    private void hideLoading() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 }

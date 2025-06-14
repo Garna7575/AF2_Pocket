@@ -1,6 +1,24 @@
 package com.example.apptfc.API;
 
 
+import com.example.apptfc.API.models.Admin;
+import com.example.apptfc.API.models.CommonArea;
+import com.example.apptfc.API.models.ForgotPassword;
+import com.example.apptfc.API.models.Incidence;
+import com.example.apptfc.API.models.Neighbor;
+import com.example.apptfc.API.models.Neighborhood;
+import com.example.apptfc.API.models.PasswordChangeRequest;
+import com.example.apptfc.API.models.PaymentEmailDTO;
+import com.example.apptfc.API.models.PostAreaReservation;
+import com.example.apptfc.API.models.PostRequest;
+import com.example.apptfc.API.models.Receipt;
+import com.example.apptfc.API.models.Record;
+import com.example.apptfc.API.models.Reservation;
+import com.example.apptfc.API.models.User;
+import com.example.apptfc.API.models.Vote;
+import com.example.apptfc.API.models.VoteResult;
+import com.example.apptfc.API.models.creationNeighborhoods;
+
 import java.util.List;
 
 import okhttp3.MultipartBody;

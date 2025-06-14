@@ -9,11 +9,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.apptfc.API.Admin;
+import com.example.apptfc.API.models.Admin;
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.Neighborhood;
+import com.example.apptfc.API.models.Neighborhood;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.Activities.AccountInfoActivity;
+import com.example.apptfc.Activities.general.AccountInfoActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.AdminNeighborhoodAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,13 +37,17 @@ public class MainAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_admin);
-        sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-        listView = findViewById(R.id.neighborhoodsListView);
-        adapter = new AdminNeighborhoodAdapter(this, neighborhoodList);
-        listView.setAdapter(adapter);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+
+        setupViews();
+        setupAdapters();
+        setupListeners();
+
+        loadAdminDataAndNeighborhoods();
+    }
+
+    private void setupListeners() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) return true;
             if (item.getItemId() == R.id.nav_settings) {
@@ -67,8 +71,17 @@ public class MainAdminActivity extends AppCompatActivity {
         findViewById(R.id.fabAddCommunity).setOnClickListener(v -> {
             startActivityForResult(new Intent(this, AddNeighborhoodActivity.class), 101);
         });
+    }
 
-        loadAdminDataAndNeighborhoods();
+    private void setupAdapters() {
+        adapter = new AdminNeighborhoodAdapter(this, neighborhoodList);
+        listView.setAdapter(adapter);
+    }
+
+    private void setupViews() {
+        listView = findViewById(R.id.neighborhoodsListView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }
 
     private void loadAdminDataAndNeighborhoods() {

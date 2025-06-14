@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.apptfc.API.Neighborhood;
-import com.example.apptfc.R;
+import com.example.apptfc.API.models.Neighborhood;
 
 import java.util.List;
 

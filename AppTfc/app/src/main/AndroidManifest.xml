@@ -44,31 +44,31 @@
             android:name=".Activities.admin.NeighborhoodDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ReceiptDetailActivity"
+            android:name=".Activities.Neighbor.ReceiptDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ReceiptListActivity"
+            android:name=".Activities.Neighbor.ReceiptListActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.AddReservation"
+            android:name=".Activities.Neighbor.AddReservation"
             android:exported="false" />
         <activity
-            android:name=".Activities.BookingsActivity"
+            android:name=".Activities.Neighbor.BookingsActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Neighbor.ChangePasswordActivity"
+            android:name=".Activities.general.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.PersonalInfoActivity"
+            android:name=".Activities.general.PersonalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.AccountInfoActivity"
+            android:name=".Activities.general.AccountInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ProfileActivity"
+            android:name=".Activities.Neighbor.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.incidences.PostIncidenceActivity"
+            android:name=".Activities.Neighbor.PostIncidenceActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Neighbor.AnnouncementsActivity"
@@ -80,7 +80,7 @@
             android:name=".Activities.admin.MainAdminActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".Activities.general.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,7 +89,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.RegisterActivity"
+            android:name=".Activities.general.RegisterActivity"
             android:exported="false" />
     </application>
 

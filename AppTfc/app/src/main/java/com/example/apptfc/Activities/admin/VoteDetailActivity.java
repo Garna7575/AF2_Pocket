@@ -1,7 +1,6 @@
 package com.example.apptfc.Activities.admin;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.API.VoteResult;
+import com.example.apptfc.API.models.VoteResult;
 import com.example.apptfc.R;
 
 import okhttp3.ResponseBody;
@@ -25,17 +24,13 @@ public class VoteDetailActivity extends AppCompatActivity {
     private TextView txtFavor, txtContra, txtTotal;
     private Button btnEndVote;
     private int voteId;
-    private static final String TAG = "VoteDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_detail);
 
-        txtFavor = findViewById(R.id.txtFavor);
-        txtContra = findViewById(R.id.txtContra);
-        txtTotal = findViewById(R.id.txtTotal);
-        btnEndVote = findViewById(R.id.btnEndVote);
+        setupViews();
 
         voteId = getIntent().getIntExtra("voteId", -1);
 
@@ -44,6 +39,13 @@ public class VoteDetailActivity extends AppCompatActivity {
         }
 
         btnEndVote.setOnClickListener(v -> confirmEndVote());
+    }
+
+    private void setupViews() {
+        txtFavor = findViewById(R.id.txtFavor);
+        txtContra = findViewById(R.id.txtContra);
+        txtTotal = findViewById(R.id.txtTotal);
+        btnEndVote = findViewById(R.id.btnEndVote);
     }
 
     private void fetchVoteDetails(int id) {
@@ -63,7 +65,7 @@ public class VoteDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VoteResult> call, Throwable t) {
-                Log.e(TAG, "Error al cargar resultados", t);
+                Log.e("VoteDetailsActivity", "Error al cargar resultados", t);
                 Toast.makeText(VoteDetailActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });

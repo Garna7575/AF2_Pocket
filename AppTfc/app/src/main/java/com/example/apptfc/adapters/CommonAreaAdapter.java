@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.API.CommonArea;
+import com.example.apptfc.API.models.CommonArea;
 import com.example.apptfc.R;
 import com.google.android.material.card.MaterialCardView;
 

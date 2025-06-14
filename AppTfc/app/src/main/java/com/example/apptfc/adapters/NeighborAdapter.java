@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.API.Neighbor;
+import com.example.apptfc.API.models.Neighbor;
 import com.example.apptfc.Activities.admin.NeighborDetailActivity;
 import com.example.apptfc.R;
 

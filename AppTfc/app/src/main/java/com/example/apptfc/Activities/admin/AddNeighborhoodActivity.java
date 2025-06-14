@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.apptfc.API.Admin;
+import com.example.apptfc.API.models.Admin;
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.creationNeighborhoods;
+import com.example.apptfc.API.models.creationNeighborhoods;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.R;
 
@@ -33,17 +33,19 @@ public class AddNeighborhoodActivity extends AppCompatActivity {
     private EditText etName;
     private ImageView imagePreview;
     private byte[] imageBytes = null;
+    Button btnSelectImage, btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_neighborhood);
 
-        etName = findViewById(R.id.etNeighborhoodName);
-        imagePreview = findViewById(R.id.imagePreview);
-        Button btnSelectImage = findViewById(R.id.btnSelectImage);
-        Button btnSubmit = findViewById(R.id.btnSubmit);
+        setupViews();
 
+        setupListeners();
+    }
+
+    private void setupListeners() {
         btnSelectImage.setOnClickListener(v -> selectImage());
 
         btnSubmit.setOnClickListener(v -> {
@@ -51,6 +53,13 @@ public class AddNeighborhoodActivity extends AppCompatActivity {
                 createNeighborhood();
             }
         });
+    }
+
+    private void setupViews() {
+        etName = findViewById(R.id.etNeighborhoodName);
+        imagePreview = findViewById(R.id.imagePreview);
+        btnSelectImage = findViewById(R.id.btnSelectImage);
+        btnSubmit = findViewById(R.id.btnSubmit);
     }
 
     private boolean validateFields() {

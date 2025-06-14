@@ -14,20 +14,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.API.Admin;
+import com.example.apptfc.API.models.Admin;
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.Neighbor;
-import com.example.apptfc.API.Neighborhood;
-import com.example.apptfc.API.Record;
+import com.example.apptfc.API.models.Neighbor;
+import com.example.apptfc.API.models.Neighborhood;
+import com.example.apptfc.API.models.Record;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.API.Vote;
-import com.example.apptfc.Activities.BookingsActivity;
-import com.example.apptfc.Activities.ProfileActivity;
+import com.example.apptfc.API.models.Vote;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.RecordAdapter;
 import com.example.apptfc.adapters.VoteAdapter;
@@ -42,7 +39,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainNeighborActivity extends AppCompatActivity {
-    private RecyclerView recordRecyclerView;
     private RecyclerView voteRecyclerView;
     private Button btnCallAdmin;
     private ImageView neighborhoodLogo;
@@ -63,44 +59,26 @@ public class MainNeighborActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
 
-        btnCallAdmin = findViewById(R.id.btnCallAdmin);
-        voteRecyclerView = findViewById(R.id.recyclerViewVotaciones);
-        recordRecyclerView = findViewById(R.id.recyclerViewActas);
-        communityName = findViewById(R.id.communityName);
-        neighborhoodLogo = findViewById(R.id.neighborhoodLogo);
-        bottomNav = findViewById(R.id.bottomNavigationView);
-
-        bottomNav.setSelectedItemId(R.id.nav_home);
+        setupViews();
 
         loadData(prefs);
 
-        votes = new ArrayList<>();
+        setupAdapters();
 
-        voteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setupListeners(prefs);
+    }
 
-        voteAdapter = new VoteAdapter(votes, this, true);
-        voteRecyclerView.setAdapter(voteAdapter);
-
-        voteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
+    private void setupListeners(SharedPreferences prefs) {
         btnCallAdmin.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:+34" + prefs.getString("adminTlf", "90000000")));
             startActivity(intent);
         });
 
-        recyclerViewActas = findViewById(R.id.recyclerViewActas);
-        recyclerViewActas.setLayoutManager(new LinearLayoutManager(this));
-
-        records = new ArrayList<>();
-        recordAdapter = new RecordAdapter(records, this);
-        recyclerViewActas.setAdapter(recordAdapter);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
-
                 if (item.getItemId() == R.id.nav_home){
                     startActivity(new Intent(MainNeighborActivity.this, MainNeighborActivity.class));
                     return true;
@@ -120,6 +98,34 @@ public class MainNeighborActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void setupAdapters() {
+        votes = new ArrayList<>();
+
+        voteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        voteAdapter = new VoteAdapter(votes, this, true);
+        voteRecyclerView.setAdapter(voteAdapter);
+
+        voteRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        recyclerViewActas.setLayoutManager(new LinearLayoutManager(this));
+
+        records = new ArrayList<>();
+        recordAdapter = new RecordAdapter(records, this);
+        recyclerViewActas.setAdapter(recordAdapter);
+    }
+
+    private void setupViews() {
+        btnCallAdmin = findViewById(R.id.btnCallAdmin);
+        voteRecyclerView = findViewById(R.id.recyclerViewVotaciones);
+        communityName = findViewById(R.id.communityName);
+        neighborhoodLogo = findViewById(R.id.neighborhoodLogo);
+        bottomNav = findViewById(R.id.bottomNavigationView);
+        recyclerViewActas = findViewById(R.id.recyclerViewActas);
+
+        bottomNav.setSelectedItemId(R.id.nav_home);
     }
 
     private void loadData(SharedPreferences prefs){
@@ -186,7 +192,6 @@ public class MainNeighborActivity extends AppCompatActivity {
     private void getVotes(int id) {
         apiService = RetrofitClient.get().create(ApiService.class);
         Call<List<Vote>> call = apiService.getVotesByUser(id);
-        Log.d("Votes", "URL de la petición: " + call.request().url());
         call.enqueue(new Callback<List<Vote>>() {
             @Override
             public void onResponse(Call<List<Vote>> call, Response<List<Vote>> response) {
@@ -303,11 +308,5 @@ public class MainNeighborActivity extends AppCompatActivity {
                 Log.e("ImageDecode", "Error al decodificar la imagen Base64", e);
             }
         }
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
 }

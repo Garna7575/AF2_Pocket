@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.API.Vote;
+import com.example.apptfc.API.models.Vote;
 import com.example.apptfc.R;
 
 import java.io.IOException;

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.API.Vote;
+import com.example.apptfc.API.models.Vote;
 import com.example.apptfc.R;
 
 import retrofit2.Call;
@@ -29,11 +29,15 @@ public class AddVoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_vote);
 
+        setupViews();
+
+        btnSubmit.setOnClickListener(v -> submitVote());
+    }
+
+    private void setupViews() {
         etTitle = findViewById(R.id.etVoteTitle);
         etDescription = findViewById(R.id.etVoteDescription);
         btnSubmit = findViewById(R.id.btnSubmitVote);
-
-        btnSubmit.setOnClickListener(v -> submitVote());
     }
 
     private void submitVote() {

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.API.Receipt;
+import com.example.apptfc.API.models.Receipt;
 import com.example.apptfc.R;
 
 import java.text.SimpleDateFormat;

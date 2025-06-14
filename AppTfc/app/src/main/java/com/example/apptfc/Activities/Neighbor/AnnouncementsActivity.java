@@ -16,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.Incidence;
+import com.example.apptfc.API.models.Incidence;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.Activities.BookingsActivity;
-import com.example.apptfc.Activities.ProfileActivity;
-import com.example.apptfc.Activities.incidences.PostIncidenceActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -35,12 +32,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AnnouncementsActivity extends AppCompatActivity {
-
+    private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private IncidenceAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton fabAddIncidencia;
-    private ApiService incidenceService;
+    private FloatingActionButton fabAddIncidence;
+    private ApiService apiService;
     private BottomNavigationView bottomNav;
 
     @Override
@@ -48,35 +45,26 @@ public class AnnouncementsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcements);
 
-        bottomNav = findViewById(R.id.bottomNavigationView);
+        prefs = getSharedPreferences("UserData", MODE_PRIVATE);
 
-        bottomNav.setSelectedItemId(R.id.nav_announcements);
+        apiService = RetrofitClient.get().create(ApiService.class);
 
-        SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
+        setupViews();
 
-        incidenceService = RetrofitClient.get().create(ApiService.class);
+        setupAdapters();
 
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
+        setupListeners();
 
-        recyclerView = findViewById(R.id.recyclerViewIncidencias);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new IncidenceAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
+        loadIncidences();
+        updateFabState();
+    }
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+    private void setupListeners() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             loadIncidences();
         });
 
-        fabAddIncidencia = findViewById(R.id.fabAddIncidencia);
-        fabAddIncidencia.setOnClickListener(view -> {
+        fabAddIncidence.setOnClickListener(view -> {
             long lastIncidenceTime = prefs.getLong("LAST_INCIDENCE_TIME_KEY", 0);
             long currentTime = System.currentTimeMillis();
             long cooldownPeriod = 15 * 60 * 1000;
@@ -94,9 +82,6 @@ public class AnnouncementsActivity extends AppCompatActivity {
                 startActivity(new Intent(AnnouncementsActivity.this, PostIncidenceActivity.class));
             }
         });
-
-        loadIncidences();
-        updateFabState();
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -124,11 +109,37 @@ public class AnnouncementsActivity extends AppCompatActivity {
         });
     }
 
+    private void setupAdapters() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new IncidenceAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
+    private void setupViews() {
+        bottomNav = findViewById(R.id.bottomNavigationView);
+
+        bottomNav.setSelectedItemId(R.id.nav_announcements);
+
+        recyclerView = findViewById(R.id.recyclerViewIncidencias);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        fabAddIncidence = findViewById(R.id.fabAddIncidencia);
+
+
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
     private void loadIncidences() {
-        SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         swipeRefreshLayout.setRefreshing(true);
         Log.d("incidences", String.valueOf(prefs.getInt("neighborhoodId", -1)));
-        Call<List<Incidence>> call = incidenceService.getIncidencesByNeighborhoodId(prefs.getInt("neighborhoodId", -1));
+        Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(prefs.getInt("neighborhoodId", -1));
         call.enqueue(new Callback<List<Incidence>>() {
             @Override
             public void onResponse(Call<List<Incidence>> call, Response<List<Incidence>> response) {
@@ -163,11 +174,11 @@ public class AnnouncementsActivity extends AppCompatActivity {
         long cooldownPeriod = 15 * 60 * 1000;
 
         if (lastIncidenceTime != 0 && currentTime - lastIncidenceTime < cooldownPeriod) {
-            fabAddIncidencia.setAlpha(0.5f);
-            fabAddIncidencia.setEnabled(false);
+            fabAddIncidence.setAlpha(0.5f);
+            fabAddIncidence.setEnabled(false);
         } else {
-            fabAddIncidencia.setAlpha(1.0f);
-            fabAddIncidencia.setEnabled(true);
+            fabAddIncidence.setAlpha(1.0f);
+            fabAddIncidence.setEnabled(true);
         }
     }
 

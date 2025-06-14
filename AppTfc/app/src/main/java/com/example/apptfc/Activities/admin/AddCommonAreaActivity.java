@@ -3,7 +3,6 @@ package com.example.apptfc.Activities.admin;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.CommonArea;
+import com.example.apptfc.API.models.CommonArea;
 import com.example.apptfc.API.RetrofitClient;
 import com.example.apptfc.R;
 
@@ -30,10 +29,14 @@ public class AddCommonAreaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_common_area);
 
-        etAreaName = findViewById(R.id.etAreaName);
-        btnSubmit = findViewById(R.id.btnSubmitArea);
+        setupViews();
 
         btnSubmit.setOnClickListener(v -> addCommonArea());
+    }
+
+    private void setupViews() {
+        etAreaName = findViewById(R.id.etAreaName);
+        btnSubmit = findViewById(R.id.btnSubmitArea);
     }
 
     private void addCommonArea() {

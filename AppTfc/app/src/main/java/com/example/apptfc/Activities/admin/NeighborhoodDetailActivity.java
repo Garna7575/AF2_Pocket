@@ -15,12 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.Incidence;
-import com.example.apptfc.API.Neighbor;
-import com.example.apptfc.API.Neighborhood;
+import com.example.apptfc.API.models.Incidence;
+import com.example.apptfc.API.models.Neighbor;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.Activities.AccountInfoActivity;
-import com.example.apptfc.Activities.PersonalInfoActivity;
+import com.example.apptfc.Activities.general.AccountInfoActivity;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
 import com.example.apptfc.adapters.NeighborAdapter;
@@ -55,13 +53,6 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_neighborhood_detail);
 
         initializeViews();
-        if (sharedPreferences.getInt("neighborhoodId", -1) == -1) {
-            Toast.makeText(this, "Error: No se encontraron datos de la comunidad", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        } else{
-            neighborhoodId = sharedPreferences.getInt("neighborhoodId", -1);
-        }
         setupTabs();
         setupBottomNavigation();
         loadNeighbors();

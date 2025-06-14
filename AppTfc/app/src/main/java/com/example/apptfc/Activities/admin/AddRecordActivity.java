@@ -31,9 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddRecordActivity extends AppCompatActivity {
-
-    private static final int PICK_FILE_REQUEST = 101;
-
     private EditText etName, etDescription;
     private Button btnSelectFile, btnSubmit;
     private TextView tvFileName;
@@ -45,26 +42,33 @@ public class AddRecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
 
+        setupViews();
+        setupListeners();
+    }
+
+    private void setupListeners() {
+        btnSelectFile.setOnClickListener(v -> selectFile());
+        btnSubmit.setOnClickListener(v -> uploadRecord());
+    }
+
+    private void setupViews() {
         etName = findViewById(R.id.etRecordName);
         etDescription = findViewById(R.id.etRecordDescription);
         btnSelectFile = findViewById(R.id.btnSelectFile);
         btnSubmit = findViewById(R.id.btnSubmitRecord);
         tvFileName = findViewById(R.id.tvFileName);
-
-        btnSelectFile.setOnClickListener(v -> selectFile());
-        btnSubmit.setOnClickListener(v -> uploadRecord());
     }
 
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*"); // Aceptar cualquier tipo de archivo
-        startActivityForResult(intent, PICK_FILE_REQUEST);
+        intent.setType("*/*");
+        startActivityForResult(intent, 101);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == 101 && resultCode == RESULT_OK && data != null) {
             fileUri = data.getData();
             String fileName = getFileName(fileUri);
             tvFileName.setText(fileName);
@@ -107,7 +111,6 @@ public class AddRecordActivity extends AppCompatActivity {
         showLoading("Subiendo acta...");
 
         try {
-            // Crear archivo temporal
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
             File file = new File(getCacheDir(), getFileName(fileUri));
             OutputStream outputStream = new FileOutputStream(file);
@@ -123,7 +126,7 @@ public class AddRecordActivity extends AppCompatActivity {
             RequestBody namePart = RequestBody.create(MediaType.parse("text/plain"), name);
             RequestBody descriptionPart = RequestBody.create(MediaType.parse("text/plain"), description);
             RequestBody datePart = RequestBody.create(MediaType.parse("text/plain"),
-                    String.valueOf(System.currentTimeMillis())); // Fecha actual en milisegundos
+                    String.valueOf(System.currentTimeMillis()));
 
             RequestBody requestFile = RequestBody.create(
                     MediaType.parse(getContentResolver().getType(fileUri)),
@@ -141,8 +144,7 @@ public class AddRecordActivity extends AppCompatActivity {
                     MediaType.parse("text/plain"),
                     String.valueOf(neighborhoodId)
             );
-
-            // Llamar al servicio
+            
             ApiService apiService = RetrofitClient.get().create(ApiService.class);
             Call<Void> call = apiService.uploadRecord(
                     namePart,

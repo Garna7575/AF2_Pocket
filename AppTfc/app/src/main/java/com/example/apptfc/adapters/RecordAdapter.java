@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.API.Record;
+import com.example.apptfc.API.models.Record;
 import com.example.apptfc.R;
 
 import java.util.List;

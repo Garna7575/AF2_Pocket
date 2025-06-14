@@ -12,14 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.apptfc.Activities.AccountInfoActivity;
-import com.example.apptfc.Activities.admin.AddRecordActivity;
+import com.example.apptfc.Activities.general.AccountInfoActivity;
 
 import com.example.apptfc.API.ApiService;
-import com.example.apptfc.API.Record;
+import com.example.apptfc.API.models.Record;
 import com.example.apptfc.API.RetrofitClient;
-import com.example.apptfc.API.Vote;
-import com.example.apptfc.Activities.ProfileActivity;
+import com.example.apptfc.API.models.Vote;
 import com.example.apptfc.R;
 import com.example.apptfc.adapters.RecordAdapter;
 import com.example.apptfc.adapters.VoteAdapter;
@@ -34,8 +32,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class VotesRecordsActivity extends AppCompatActivity {
-
-    private static final String TAG = "VotesRecordsActivity";
 
     private RecyclerView votesRecyclerView;
     private RecyclerView recordsRecyclerView;
@@ -86,32 +82,32 @@ public class VotesRecordsActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         int neighborhoodId = prefs.getInt("neighborhoodId", -1);
 
-        Log.d(TAG, "loadData: neighborhoodId=" + neighborhoodId);
+        Log.d("VotesRecordsActivity", "loadData: neighborhoodId=" + neighborhoodId);
 
         if (neighborhoodId != -1) {
             loadVotes(neighborhoodId);
             loadRecords(neighborhoodId);
         } else {
             hideLoading();
-            Log.e(TAG, "loadData: Datos de usuario no encontrados en SharedPreferences");
+            Log.e("VotesRecordsActivity", "loadData: Datos de usuario no encontrados en SharedPreferences");
             Toast.makeText(this, "Error al identificar la comunidad", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loadVotes(int neighborhoodId) {
-        Log.d(TAG, "loadVotes: Iniciando carga de votos para userId=" + neighborhoodId);
+        Log.d("VotesRecordsActivity", "loadVotes: Iniciando carga de votos para userId=" + neighborhoodId);
         ApiService apiService = RetrofitClient.get().create(ApiService.class);
         apiService.getVotesByNeighborhoodId(neighborhoodId).enqueue(new Callback<List<Vote>>() {
             @Override
             public void onResponse(Call<List<Vote>> call, Response<List<Vote>> response) {
-                Log.d(TAG, "loadVotes: onResponse called");
+                Log.d("VotesRecordsActivity", "loadVotes: onResponse called");
                 if (response.isSuccessful() && response.body() != null) {
                     votes.clear();
                     votes.addAll(response.body());
                     voteAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "loadVotes: votos recibidos = " + votes.size());
+                    Log.d("VotesRecordsActivity", "loadVotes: votos recibidos = " + votes.size());
                 } else {
-                    Log.e(TAG, "loadVotes: respuesta inválida o vacía");
+                    Log.e("VotesRecordsActivity", "loadVotes: respuesta inválida o vacía");
                 }
                 hideLoading();
             }
@@ -119,26 +115,26 @@ public class VotesRecordsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Vote>> call, Throwable t) {
                 hideLoading();
-                Log.e(TAG, "loadVotes: error en la petición", t);
+                Log.e("VotesRecordsActivity", "loadVotes: error en la petición", t);
                 Toast.makeText(VotesRecordsActivity.this, "Error al cargar votaciones", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loadRecords(int neighborhoodId) {
-        Log.d(TAG, "loadRecords: Iniciando carga de actas para neighborhoodId=" + neighborhoodId);
+        Log.d("VotesRecordsActivity", "loadRecords: Iniciando carga de actas para neighborhoodId=" + neighborhoodId);
         ApiService apiService = RetrofitClient.get().create(ApiService.class);
         apiService.getRecords(neighborhoodId).enqueue(new Callback<List<Record>>() {
             @Override
             public void onResponse(Call<List<Record>> call, Response<List<Record>> response) {
-                Log.d(TAG, "loadRecords: onResponse called");
+                Log.d("VotesRecordsActivity", "loadRecords: onResponse called");
                 if (response.isSuccessful() && response.body() != null) {
                     records.clear();
                     records.addAll(response.body());
                     recordAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "loadRecords: actas recibidas = " + records.size());
+                    Log.d("VotesRecordsActivity", "loadRecords: actas recibidas = " + records.size());
                 } else {
-                    Log.e(TAG, "loadRecords: respuesta inválida o vacía");
+                    Log.e("VotesRecordsActivity", "loadRecords: respuesta inválida o vacía");
                 }
                 hideLoading();
             }
@@ -146,7 +142,7 @@ public class VotesRecordsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Record>> call, Throwable t) {
                 hideLoading();
-                Log.e(TAG, "loadRecords: error en la petición", t);
+                Log.e("VotesRecordsActivity", "loadRecords: error en la petición", t);
                 Toast.makeText(VotesRecordsActivity.this, "Error al cargar actas", Toast.LENGTH_SHORT).show();
             }
         });
@@ -158,11 +154,17 @@ public class VotesRecordsActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) {
                 startActivity(new Intent(this, NeighborhoodDetailActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             } else if (item.getItemId() == R.id.nav_records) {
                 return true;
             } else if (item.getItemId() == R.id.nav_settings) {
                 startActivity(new Intent(this, AccountInfoActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                return true;
+            } else if (item.getItemId() == R.id.nav_commonAreas) {
+                startActivity(new Intent(this, CommonAreasActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
             }
             return false;
@@ -199,7 +201,7 @@ public class VotesRecordsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         bottomNav.setSelectedItemId(R.id.nav_records);
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "onActivityResult: datos actualizados, recargando...");
+            Log.d("VotesRecordsActivity", "onActivityResult: datos actualizados, recargando...");
             loadData();
         }
     }

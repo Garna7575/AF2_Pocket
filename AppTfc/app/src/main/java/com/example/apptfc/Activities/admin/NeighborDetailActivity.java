@@ -1,10 +1,7 @@
 package com.example.apptfc.Activities.admin;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +13,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apptfc.API.ApiService; // Asegúrate que esta importación sea correcta
-import com.example.apptfc.API.Neighbor;
-import com.example.apptfc.API.PaymentEmailDTO;
-import com.example.apptfc.API.Receipt;
+import com.example.apptfc.API.models.Neighbor;
+import com.example.apptfc.API.models.PaymentEmailDTO;
+import com.example.apptfc.API.models.Receipt;
 import com.example.apptfc.API.RetrofitClient; // Asegúrate que esta importación sea correcta
 import com.example.apptfc.R;
 
@@ -43,20 +40,8 @@ public class NeighborDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_neighbor_detail);
 
         currentNeighbor = getIntent().getParcelableExtra("NEIGHBOR");
-        if (currentNeighbor == null || currentNeighbor.getUser() == null) {
-            Toast.makeText(this, "Error: Información del vecino incompleta.", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
 
-        try {
-            apiService = RetrofitClient.get().create(ApiService.class);
-        } catch (Exception e) {
-            Log.e(TAG, "Error inicializando ApiService", e);
-            Toast.makeText(this, "Error al inicializar el servicio API.", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
+        apiService = RetrofitClient.get().create(ApiService.class);
 
         initializeViews();
         populateNeighborDetails();
@@ -145,19 +130,6 @@ public class NeighborDetailActivity extends AppCompatActivity {
     }
 
     private void sendPaymentReminderEmail() {
-        if (apiService == null) {
-            Toast.makeText(this, "Servicio API no disponible.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (pendingReceiptsList == null || pendingReceiptsList.isEmpty()) {
-            Toast.makeText(this, "No hay recibos pendientes para notificar.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (currentNeighbor.getUser().getEmail() == null || currentNeighbor.getUser().getEmail().isEmpty()) {
-            Toast.makeText(this, "El email del vecino no está disponible.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         String neighborName = (currentNeighbor.getUser().getName() != null ? currentNeighbor.getUser().getName() : "") +
                 " " +
                 (currentNeighbor.getUser().getSurname() != null ? currentNeighbor.getUser().getSurname() : "");
