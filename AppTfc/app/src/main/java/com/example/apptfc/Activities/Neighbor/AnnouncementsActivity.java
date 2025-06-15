@@ -87,7 +87,16 @@ public class AnnouncementsActivity extends AppCompatActivity {
 
     private void setupAdapters() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new IncidenceAdapter(new ArrayList<>());
+        adapter = new IncidenceAdapter(new ArrayList<>(), new IncidenceAdapter.OnIncidenceClickListener() {
+            @Override
+            public void onIncidenceClick(Incidence incidence) {
+            }
+
+            @Override
+            public void onResolveClick(Incidence incidence) {
+            }
+        }, false);
+
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }

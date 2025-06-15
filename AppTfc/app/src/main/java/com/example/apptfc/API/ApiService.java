@@ -161,4 +161,7 @@ public interface ApiService {
 
     @DELETE("common-area/{id}")
     Call<Void> deleteCommonArea(@Path("id") int id);
+
+    @DELETE("incidences/{id}")
+    Call<Void> deleteIncidence(@Path("id") int id);
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.models.Incidence;
 import com.example.apptfc.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -17,10 +18,20 @@ import java.util.Locale;
 
 public class IncidenceAdapter extends RecyclerView.Adapter<IncidenceAdapter.IncidenceViewHolder> {
 
-    private List<Incidence> incidences;
+    public interface OnIncidenceClickListener {
+        void onIncidenceClick(Incidence incidence);
+        void onResolveClick(Incidence incidence);
+    }
 
-    public IncidenceAdapter(List<Incidence> incidences) {
+    private List<Incidence> incidences;
+    private OnIncidenceClickListener listener;
+    private int selectedPosition = -1;
+    private boolean showResolveButton; // Controla si se muestra el botón
+
+    public IncidenceAdapter(List<Incidence> incidences, OnIncidenceClickListener listener, boolean showResolveButton) {
         this.incidences = incidences;
+        this.listener = listener;
+        this.showResolveButton = showResolveButton;
     }
 
     @NonNull
@@ -34,6 +45,7 @@ public class IncidenceAdapter extends RecyclerView.Adapter<IncidenceAdapter.Inci
     @Override
     public void onBindViewHolder(@NonNull IncidenceViewHolder holder, int position) {
         Incidence incidence = incidences.get(position);
+        boolean isSelected = position == selectedPosition;
 
         holder.title.setText(incidence.getTitle());
         holder.description.setText(incidence.getContent());
@@ -45,6 +57,31 @@ public class IncidenceAdapter extends RecyclerView.Adapter<IncidenceAdapter.Inci
             holder.date.setText("Fecha no disponible");
         }
 
+        // Mostrar botón solo si está activado y el item está seleccionado
+        boolean shouldShowButton = showResolveButton && isSelected;
+        holder.btnResolve.setVisibility(shouldShowButton ? View.VISIBLE : View.GONE);
+
+        holder.itemView.setOnClickListener(v -> {
+            int previousSelected = selectedPosition;
+            selectedPosition = holder.getAdapterPosition();
+
+            if (previousSelected == selectedPosition) {
+                selectedPosition = -1; // Deseleccionar si es el mismo item
+            }
+
+            notifyItemChanged(previousSelected);
+            notifyItemChanged(selectedPosition);
+
+            if (listener != null) {
+                listener.onIncidenceClick(incidence);
+            }
+        });
+
+        holder.btnResolve.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onResolveClick(incidence);
+            }
+        });
     }
 
     @Override
@@ -57,15 +94,21 @@ public class IncidenceAdapter extends RecyclerView.Adapter<IncidenceAdapter.Inci
         notifyDataSetChanged();
     }
 
+    public void setShowResolveButton(boolean show) {
+        this.showResolveButton = show;
+        notifyDataSetChanged();
+    }
+
     static class IncidenceViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description, date, author;
+        TextView title, description, date;
+        MaterialButton btnResolve;
 
         public IncidenceViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
             date = itemView.findViewById(R.id.date);
-            author = itemView.findViewById(R.id.author);
+            btnResolve = itemView.findViewById(R.id.btnResolve);
         }
     }
 }

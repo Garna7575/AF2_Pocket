@@ -3,6 +3,7 @@ package com.example.apptfc.API.models;
 import java.util.Date;
 
 public class Incidence {
+    int id;
     private String title;
     private String content;
     private String author;
@@ -13,6 +14,14 @@ public class Incidence {
         this.content = description;
         this.author = author;
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

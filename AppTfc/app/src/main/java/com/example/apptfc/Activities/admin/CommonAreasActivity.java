@@ -79,10 +79,10 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
                 return true;
             } else if (item.getItemId() == R.id.nav_settings) {
                 startActivity(new Intent(this, AccountInfoActivity.class));
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 return true;
             } else if (item.getItemId() == R.id.nav_commonAreas) {
-                return true; // Ya estamos en esta actividad
+                return true;
             }
             return false;
         });
@@ -171,5 +171,6 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
     protected void onResume() {
         super.onResume();
         loadCommonAreas();
+        bottomNav.setSelectedItemId(R.id.nav_commonAreas);
     }
 }

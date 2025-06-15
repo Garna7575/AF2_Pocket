@@ -10,6 +10,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NeighborhoodDetailActivity extends AppCompatActivity {
+public class NeighborhoodDetailActivity extends AppCompatActivity implements IncidenceAdapter.OnIncidenceClickListener {
 
     private SharedPreferences sharedPreferences;
     private ProgressDialog progressDialog;
@@ -54,6 +55,7 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighborhood_detail);
 
+
         initializeViews();
         setupListeners();
         setupTabs();
@@ -74,14 +76,13 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
 
         rvIncidences = findViewById(R.id.rvIncidences);
         rvIncidences.setLayoutManager(new LinearLayoutManager(this));
-        incidenceAdapter = new IncidenceAdapter(new ArrayList<>());
+        incidenceAdapter = new IncidenceAdapter(new ArrayList<>(), this, true);
         rvIncidences.setAdapter(incidenceAdapter);
 
         tabHost = findViewById(R.id.tabHost);
         searchView = findViewById(R.id.searchView);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
         fabAddReceipt = findViewById(R.id.fabAddReceipt);
 
         neighborhoodId = sharedPreferences.getInt("neighborhoodId", -1);
@@ -92,6 +93,7 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
             startActivity(new Intent(NeighborhoodDetailActivity.this, AddReceiptActivity.class));
         });
     }
+
     private void setupTabs() {
         tabHost.setup();
 
@@ -237,5 +239,49 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
             loadNeighbors();
             loadIncidences();
         }
+    }
+
+    @Override
+    public void onIncidenceClick(Incidence incidence) {
+    }
+
+    @Override
+    public void onResolveClick(Incidence incidence) {
+        new AlertDialog.Builder(this)
+                .setTitle("Resolver incidencia")
+                .setMessage("¿Estás seguro de marcar esta incidencia como resuelta?")
+                .setPositiveButton("Resolver", (dialog, which) -> resolveIncidence(incidence))
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void resolveIncidence(Incidence incidence) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Resolviendo incidencia...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        ApiService apiService = RetrofitClient.get().create(ApiService.class);
+        apiService.deleteIncidence(incidence.getId()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    Toast.makeText(NeighborhoodDetailActivity.this,
+                            "Incidencia resuelta", Toast.LENGTH_SHORT).show();
+                    loadIncidences();
+                } else {
+                    Toast.makeText(NeighborhoodDetailActivity.this,
+                            "Error al resolver", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(NeighborhoodDetailActivity.this,
+                        "Error de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
