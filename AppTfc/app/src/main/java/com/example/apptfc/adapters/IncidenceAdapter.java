@@ -27,7 +27,7 @@ public class IncidenceAdapter extends RecyclerView.Adapter<IncidenceAdapter.Inci
     @Override
     public IncidenceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.incidences_item, parent, false);
+                .inflate(R.layout.item_incidences, parent, false);
         return new IncidenceViewHolder(view);
     }
 

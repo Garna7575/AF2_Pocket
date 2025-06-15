@@ -1,58 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_vote_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@android:color/white"
-    tools:context=".Activities.admin.VoteDetailsActivity">
+    android:background="@color/background_light"
+    android:fillViewport="true">
 
-    <!-- Título de la votación -->
-    <TextView
-        android:id="@+id/txtVoteTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detalles de la votación"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="16dp"/>
-
-    <!-- Resultados -->
-    <TextView
-        android:id="@+id/txtFavor"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A favor: --"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/txtContra"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="En contra: --"
-        android:textSize="16sp"
-        android:paddingBottom="8dp"/>
+        <!-- Título de la votación -->
+        <TextView
+            android:id="@+id/txtVoteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detalles de la votación"
+            android:textAlignment="center"
+            android:textColor="@color/primary_text"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="24dp"/>
 
-    <TextView
-        android:id="@+id/txtTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Total: --"
-        android:textSize="16sp"
-        android:paddingBottom="24dp"/>
+        <!-- Tarjeta de resultados -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
 
-    <!-- Botón para terminar votación -->
-    <Button
-        android:id="@+id/btnEndVote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terminar votación"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-</LinearLayout>
+                <!-- Barra de progreso comparativa -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Barra A Favor -->
+                    <LinearLayout
+                        android:id="@+id/progressFavor"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:background="@color/green_500"
+                        android:gravity="center_vertical|start"
+                        android:paddingStart="8dp">
+
+                        <TextView
+                            android:id="@+id/txtFavorPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- Barra En Contra -->
+                    <LinearLayout
+                        android:id="@+id/progressContra"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:background="@color/red_500"
+                        android:gravity="center_vertical|end"
+                        android:paddingEnd="8dp">
+
+                        <TextView
+                            android:id="@+id/txtContraPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Detalles numéricos -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="A favor:"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/txtFavor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="--"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="En contra:"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/txtContra"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="--"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total:"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/txtTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="--"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botón para terminar votación -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEndVote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Terminar votación"
+            android:textAllCaps="false"
+            app:iconGravity="textStart"
+            app:iconTint="@android:color/white"
+            style="@style/Widget.MaterialComponents.Button"
+            app:backgroundTint="@color/teal_700"/>
+    </LinearLayout>
+</ScrollView>
