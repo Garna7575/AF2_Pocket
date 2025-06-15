@@ -39,7 +39,7 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
     private ApiService apiService;
     private NeighborAdapter neighborsAdapter;
     private IncidenceAdapter incidenceAdapter;
-    private TextView tvNeighborhoodName, tvTotalNeighbors, tvTotalIncidences;
+    private TextView tvNeighborhoodName;
     private RecyclerView rvNeighbors, rvIncidences;
     private TabHost tabHost;
     private SearchView searchView;
@@ -66,8 +66,6 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
     private void initializeViews() {
         sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
         tvNeighborhoodName = findViewById(R.id.tvNeighborhoodName);
-        tvTotalNeighbors = findViewById(R.id.tvTotalNeighbors);
-        tvTotalIncidences = findViewById(R.id.tvTotalIncidences);
 
         rvNeighbors = findViewById(R.id.rvNeighbors);
         rvNeighbors.setLayoutManager(new LinearLayoutManager(this));
@@ -191,7 +189,6 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     allNeighbors = response.body();
                     neighborsAdapter.updateData(allNeighbors);
-                    tvTotalNeighbors.setText("Total: " + allNeighbors.size());
                 } else {
                     showError("Error al cargar vecinos");
                     Log.e("API_ERROR", "Error response: " + response.code());
@@ -216,7 +213,6 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     allIncidences = response.body();
                     incidenceAdapter.updateData(allIncidences);
-                    tvTotalIncidences.setText("Total: " + allIncidences.size());
                 } else {
                     showError("Error al cargar incidencias");
                 }

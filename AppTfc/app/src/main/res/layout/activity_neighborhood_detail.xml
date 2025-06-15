@@ -57,13 +57,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvTotalNeighbors"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:textSize="14sp"/>
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvNeighbors"
                         android:layout_width="match_parent"
@@ -76,13 +69,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvTotalIncidences"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:textSize="14sp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvIncidences"

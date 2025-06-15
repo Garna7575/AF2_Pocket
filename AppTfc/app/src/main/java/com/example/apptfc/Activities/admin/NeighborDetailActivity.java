@@ -163,6 +163,8 @@ public class NeighborDetailActivity extends AppCompatActivity {
                 }
             }
 
+            //Revisar por qué falla.
+
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 dismissLoadingDialog();
