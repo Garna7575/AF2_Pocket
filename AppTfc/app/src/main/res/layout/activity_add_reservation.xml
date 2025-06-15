@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:padding="16dp">
 
     <LinearLayout
@@ -16,7 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/colorPrimaryLight"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,6 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha seleccionada"
+                    android:textColor="@color/textPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -36,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:textColor="@color/textSecondary"
                     android:textSize="18sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -45,7 +51,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/colorPrimaryLight"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hora de inicio"
+                    android:textColor="@color/textPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -80,6 +90,8 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:text="-"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                         <TextView
@@ -88,6 +100,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
                             android:text="09"
+                            android:textColor="@color/textPrimary"
                             android:textSize="20sp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -95,54 +108,54 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:text="+"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
                     </LinearLayout>
 
                     <!-- Grupo Minutos -->
-                    <HorizontalScrollView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:scrollbars="none">
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:text="Minutos:"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="16sp"
+                            android:layout_marginEnd="8dp"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Minutos:"
-                                android:textSize="16sp"
-                                android:paddingEnd="4dp" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDecreaseStartMinute"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="-"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnDecreaseStartMinute"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_marginStart="4dp"
-                                android:text="-"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        <TextView
+                            android:id="@+id/tvStartMinute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="00"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="20sp" />
 
-                            <TextView
-                                android:id="@+id/tvStartMinute"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="8dp"
-                                android:text="00"
-                                android:textSize="20sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnIncreaseStartMinute"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:text="+"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
-
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnIncreaseStartMinute"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:text="+"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -152,7 +165,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/colorPrimaryLight"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -164,6 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hora de fin"
+                    android:textColor="@color/textPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -187,6 +204,8 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:text="-"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                         <TextView
@@ -195,6 +214,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
                             android:text="10"
+                            android:textColor="@color/textPrimary"
                             android:textSize="20sp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -202,6 +222,8 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:text="+"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
                     </LinearLayout>
 
@@ -209,7 +231,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
+                        android:layout_weight="1"
                         android:orientation="horizontal"
                         android:gravity="center">
 
@@ -217,15 +239,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Minutos:"
+                            android:textColor="@color/textSecondary"
                             android:textSize="16sp"
-                            android:minWidth="72dp" />
+                            android:layout_marginEnd="8dp"/>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnDecreaseEndMinute"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_marginStart="8dp"
                             android:text="-"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                         <TextView
@@ -234,6 +258,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
                             android:text="00"
+                            android:textColor="@color/textPrimary"
                             android:textSize="20sp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -241,18 +266,21 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:text="+"
+                            android:textSize="18sp"
+                            app:iconGravity="textStart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Resto del layout -->
+        <!-- Lista de zonas comunes -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Zonas comunes disponibles"
+            android:textColor="@color/textPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -261,14 +289,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:minHeight="200dp"
             tools:listitem="@layout/item_common_area" />
 
+        <!-- Botón de confirmación -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreateReservation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Confirmar reserva"
-            style="@style/Widget.MaterialComponents.Button" />
+            android:textAllCaps="false"
+            app:iconGravity="textStart"
+            style="@style/Widget.MaterialComponents.Button"
+            app:backgroundTint="@color/colorPrimary" />
     </LinearLayout>
 </ScrollView>

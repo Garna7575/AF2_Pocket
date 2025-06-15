@@ -35,7 +35,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:text="Mis reservas"
+        android:text="@string/mis_reservas"
         android:textColor="@color/primaryButton"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No tienes reservas realizadas"
+            android:text="@string/no_tienes_reservas_realizadas"
             android:textColor="@color/text_secondary_light"
             android:textSize="16sp"/>
     </LinearLayout>

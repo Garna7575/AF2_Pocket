@@ -12,7 +12,6 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <!-- Logo -->
         <ImageView
             android:id="@+id/logoImage"
             android:layout_width="100dp"
@@ -21,7 +20,6 @@
             android:contentDescription="@string/app_logo"
             android:layout_marginBottom="32dp" />
 
-        <!-- Título de bienvenida -->
         <TextView
             android:id="@+id/tvWelcomeTitle"
             android:layout_width="wrap_content"
@@ -33,7 +31,6 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"/>
 
-        <!-- Campo usuario -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +49,6 @@
                 android:textColor="@color/community_text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Campo contraseña -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +68,6 @@
                 android:textColor="@color/community_text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- ¿Olvidaste tu contraseña? -->
         <TextView
             android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
@@ -85,7 +80,6 @@
             android:clickable="true"
             android:focusable="true"/>
 
-        <!-- Botón Iniciar sesión -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -98,7 +92,6 @@
             android:textColor="@color/white"
             android:layout_marginTop="24dp"/>
 
-        <!-- Botón Registrarse -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"

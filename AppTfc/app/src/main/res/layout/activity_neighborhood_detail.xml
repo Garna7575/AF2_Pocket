@@ -8,17 +8,6 @@
     android:background="@color/background"
     tools:context=".Activities.admin.NeighborhoodDetailActivity">
 
-    <!-- Header con nombre de la comunidad -->
-    <TextView
-        android:id="@+id/tvNeighborhoodName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:background="@color/primaryColor"
-        android:textColor="@color/white"/>
-
     <!-- Barra de búsqueda -->
     <SearchView
         android:id="@+id/searchView"

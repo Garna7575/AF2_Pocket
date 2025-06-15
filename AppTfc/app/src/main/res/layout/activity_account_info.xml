@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Configuración de Cuenta"
+            android:text="@string/configuraci_n_de_cuenta"
             android:textSize="20sp"
             android:textColor="@color/text_primary"
             android:textStyle="bold"
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Datos personales"
+                    android:text="@string/datos_personales"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp"/>
 
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cambiar contraseña"
+                    android:text="@string/cambiar_contrase_a"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp"/>
 
@@ -130,7 +130,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cerrar sesión"
+                    android:text="@string/cerrar_sesi_n"
                     android:textSize="16sp"
                     android:textColor="@color/colorAccent"
                     android:layout_marginStart="16dp"/>

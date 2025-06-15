@@ -5,24 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- AppBar con título -->
-    <com.google.android.material.appbar.MaterialToolbar
+    <!-- Barra superior reemplazando MaterialToolbar por TextView -->
+    <TextView
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/teal_700"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Actividad Reciente"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </com.google.android.material.appbar.MaterialToolbar>
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/actividad_reciente"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <!-- Contenido principal -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -41,7 +36,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- Botón flotante - Ahora posicionado relativo a la barra -->
+    <!-- Botón flotante -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddIncidencia"
         android:layout_width="wrap_content"

@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nueva Área Común"
+            android:text="@string/nueva_rea_com_n"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp"/>
@@ -27,14 +27,14 @@
                 android:id="@+id/etAreaName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre del área común"/>
+                android:hint="@string/nombre_del_rea_com_n"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnSubmitArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Agregar Área"
+            android:text="@string/agregar_rea"
             app:backgroundTint="@color/colorPrimary"
             android:textColor="@color/white"/>
 

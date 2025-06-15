@@ -15,7 +15,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Comunidades asignadas"
+            android:text="@string/comunidades_asignadas"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/community_text_primary"

@@ -27,14 +27,14 @@
                 android:id="@+id/neighborhoodLogo"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
-                android:contentDescription="Logo del vecindario"
+                android:contentDescription="@string/logo_del_vecindario"
                 android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/communityName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comunidad "
+                android:text="@string/comunidad"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -44,7 +44,7 @@
                 android:id="@+id/btnCallAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Llamar al Administrador"
+                android:text="@string/llamar_al_administrador"
                 app:iconPadding="12dp"
                 app:cornerRadius="16dp"
                 app:iconTint="@color/white"
@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Votaciones en curso"
+                android:text="@string/votaciones_en_curso"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Actas"
+                android:text="@string/actas"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"

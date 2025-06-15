@@ -22,7 +22,7 @@
                 android:id="@+id/etReceiptTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Título del recibo"
+                android:hint="@string/t_tulo_del_recibo"
                 android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,7 +37,7 @@
                 android:id="@+id/etReceiptDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripción"
+                android:hint="@string/descripci_n"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +52,7 @@
                 android:id="@+id/etReceiptAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Monto"
+                android:hint="@string/coste"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,7 +60,7 @@
             android:id="@+id/btnSubmitReceipt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crear Recibo"
+            android:text="@string/crear_recibo"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
     </LinearLayout>
 </ScrollView>

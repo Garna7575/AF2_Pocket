@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nueva Votación"
+            android:text="@string/nueva_votaci_n"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp"/>
@@ -26,7 +26,7 @@
                 android:id="@+id/etVoteTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Título"/>
+                android:hint="@string/t_tulo"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:gravity="top"
-                android:hint="Descripción"
+                android:hint="@string/descripci_n"
                 android:inputType="textMultiLine"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,7 +47,7 @@
             android:id="@+id/btnSubmitVote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crear Votación"
+            android:text="@string/crear_votaci_n"
             android:backgroundTint="@color/primaryColor"
             android:textColor="@color/white"/>
 
