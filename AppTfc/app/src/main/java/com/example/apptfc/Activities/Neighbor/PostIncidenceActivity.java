@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.apptfc.API.ApiService;
@@ -24,7 +25,6 @@ import retrofit2.Response;
 
 public class PostIncidenceActivity extends AppCompatActivity {
     private SharedPreferences prefs;
-    private static final String LAST_INCIDENCE_TIME_KEY = "LAST_INCIDENCE_TIME_KEY";
     private TextInputEditText etTitle, etContent;
     private TextInputLayout tilTitle, tilContent;
     private MaterialButton btnSubmit;
@@ -36,7 +36,6 @@ public class PostIncidenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_incidence);
 
         prefs = getSharedPreferences("UserData", MODE_PRIVATE);
-
         setupViews();
         setupListeners();
     }
@@ -57,7 +56,6 @@ public class PostIncidenceActivity extends AppCompatActivity {
         tilTitle = findViewById(R.id.tilTitle);
         tilContent = findViewById(R.id.tilContent);
         btnSubmit = findViewById(R.id.btnSubmit);
-
         toolbar = findViewById(R.id.toolbar);
     }
 
@@ -100,10 +98,6 @@ public class PostIncidenceActivity extends AppCompatActivity {
                 btnSubmit.setText("Enviar Incidencia");
 
                 if (response.isSuccessful()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putLong(LAST_INCIDENCE_TIME_KEY, System.currentTimeMillis());
-                    editor.apply();
-
                     Toast.makeText(PostIncidenceActivity.this, "Incidencia enviada con éxito", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {

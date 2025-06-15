@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apptfc.API.ApiService;
 import com.example.apptfc.API.models.CommonArea;
 import com.example.apptfc.API.RetrofitClient;
+import com.example.apptfc.Activities.general.AccountInfoActivity;
 import com.example.apptfc.adapters.CommonAreaAdapter;
 import com.example.apptfc.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -76,6 +77,8 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             } else if (item.getItemId() == R.id.nav_settings) {
+                startActivity(new Intent(this, AccountInfoActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             } else if (item.getItemId() == R.id.nav_commonAreas) {
                 startActivity(new Intent(this, CommonAreasActivity.class));

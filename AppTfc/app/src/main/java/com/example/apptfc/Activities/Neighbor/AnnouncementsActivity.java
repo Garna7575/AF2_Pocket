@@ -46,17 +46,12 @@ public class AnnouncementsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_announcements);
 
         prefs = getSharedPreferences("UserData", MODE_PRIVATE);
-
         apiService = RetrofitClient.get().create(ApiService.class);
 
         setupViews();
-
         setupAdapters();
-
         setupListeners();
-
         loadIncidences();
-        updateFabState();
     }
 
     private void setupListeners() {
@@ -65,35 +60,17 @@ public class AnnouncementsActivity extends AppCompatActivity {
         });
 
         fabAddIncidence.setOnClickListener(view -> {
-            long lastIncidenceTime = prefs.getLong("LAST_INCIDENCE_TIME_KEY", 0);
-            long currentTime = System.currentTimeMillis();
-            long cooldownPeriod = 15 * 60 * 1000;
-
-            if (lastIncidenceTime == 0) {
-                startActivity(new Intent(AnnouncementsActivity.this, PostIncidenceActivity.class));
-            } else if (currentTime - lastIncidenceTime < cooldownPeriod) {
-                long remainingMinutes = (cooldownPeriod - (currentTime - lastIncidenceTime)) / 60000;
-                long remainingSeconds = ((cooldownPeriod - (currentTime - lastIncidenceTime)) % 60000) / 1000;
-
-                Toast.makeText(AnnouncementsActivity.this,
-                        String.format("Espere %d min %d seg antes de añadir otra incidencia", remainingMinutes, remainingSeconds),
-                        Toast.LENGTH_LONG).show();
-            } else {
-                startActivity(new Intent(AnnouncementsActivity.this, PostIncidenceActivity.class));
-            }
+            startActivity(new Intent(AnnouncementsActivity.this, PostIncidenceActivity.class));
         });
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
-
                 if (item.getItemId() == R.id.nav_home){
                     startActivity(new Intent(AnnouncementsActivity.this, MainNeighborActivity.class));
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     return true;
                 } else if (item.getItemId() == R.id.nav_announcements){
-                    startActivity(new Intent(AnnouncementsActivity.this, AnnouncementsActivity.class));
                     return true;
                 } else if (item.getItemId() == R.id.nav_settings){
                     startActivity(new Intent(AnnouncementsActivity.this, ProfileActivity.class));
@@ -103,7 +80,6 @@ public class AnnouncementsActivity extends AppCompatActivity {
                     startActivity(new Intent(AnnouncementsActivity.this, BookingsActivity.class));
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
-
                 return false;
             }
         });
@@ -113,20 +89,15 @@ public class AnnouncementsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new IncidenceAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
-
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
     private void setupViews() {
         bottomNav = findViewById(R.id.bottomNavigationView);
-
         bottomNav.setSelectedItemId(R.id.nav_announcements);
-
         recyclerView = findViewById(R.id.recyclerViewIncidencias);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-
         fabAddIncidence = findViewById(R.id.fabAddIncidencia);
-
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -138,13 +109,11 @@ public class AnnouncementsActivity extends AppCompatActivity {
 
     private void loadIncidences() {
         swipeRefreshLayout.setRefreshing(true);
-        Log.d("incidences", String.valueOf(prefs.getInt("neighborhoodId", -1)));
         Call<List<Incidence>> call = apiService.getIncidencesByNeighborhoodId(prefs.getInt("neighborhoodId", -1));
         call.enqueue(new Callback<List<Incidence>>() {
             @Override
             public void onResponse(Call<List<Incidence>> call, Response<List<Incidence>> response) {
                 swipeRefreshLayout.setRefreshing(false);
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<Incidence> incidences = response.body();
                     if (!incidences.isEmpty()) {
@@ -167,21 +136,6 @@ public class AnnouncementsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateFabState() {
-        SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
-        long lastIncidenceTime = prefs.getLong("LAST_INCIDENCE_TIME_KEY", 0);
-        long currentTime = System.currentTimeMillis();
-        long cooldownPeriod = 15 * 60 * 1000;
-
-        if (lastIncidenceTime != 0 && currentTime - lastIncidenceTime < cooldownPeriod) {
-            fabAddIncidence.setAlpha(0.5f);
-            fabAddIncidence.setEnabled(false);
-        } else {
-            fabAddIncidence.setAlpha(1.0f);
-            fabAddIncidence.setEnabled(true);
-        }
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -197,7 +151,6 @@ public class AnnouncementsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateFabState();
         loadIncidences();
     }
 }
