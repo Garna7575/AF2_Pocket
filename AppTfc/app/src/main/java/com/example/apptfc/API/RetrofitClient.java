@@ -26,7 +26,7 @@ public class RetrofitClient {
 
     //Retrofit configuration
     private static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/pocket/")
+            .baseUrl("https://apitfc-1.onrender.com/pocket/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
