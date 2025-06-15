@@ -3,9 +3,10 @@ package com.example.apptfc.Activities.admin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +38,8 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
     private FloatingActionButton fabAddArea;
     private BottomNavigationView bottomNav;
     private CommonArea selectedArea;
+    private SearchView searchView;
+    private List<CommonArea> allCommonAreas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
         setupRecyclerView();
         loadCommonAreas();
         setupBottomNavigation();
+        setupSearchView();
 
         fabAddArea.setOnClickListener(v -> {
             startActivity(new Intent(this, AddCommonAreaActivity.class));
@@ -57,12 +61,57 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
         rvCommonAreas = findViewById(R.id.recyclerCommonAreas);
         fabAddArea = findViewById(R.id.fabAddCommonArea);
         bottomNav = findViewById(R.id.bottomNavigationView);
+        searchView = findViewById(R.id.searchView);
     }
 
     private void setupRecyclerView() {
         rvCommonAreas.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonAreaAdapter(availableCommonAreas, this, true);
         rvCommonAreas.setAdapter(adapter);
+    }
+
+    private void setupSearchView() {
+        // Configurar el hint y estilo del SearchView
+        searchView.setQueryHint("Buscar áreas comunes...");
+        int searchPlateId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_plate", null, null);
+        View searchPlate = searchView.findViewById(searchPlateId);
+        if (searchPlate != null) {
+            searchPlate.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterCommonAreas(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filterCommonAreas(String query) {
+        List<CommonArea> filteredList = new ArrayList<>();
+
+        if (query.isEmpty()) {
+            filteredList.addAll(allCommonAreas);
+        } else {
+            String searchText = query.toLowerCase().trim();
+            for (CommonArea area : allCommonAreas) {
+                if (area.getName().toLowerCase().contains(searchText)) {
+                    filteredList.add(area);
+                }
+            }
+        }
+
+        availableCommonAreas.clear();
+        availableCommonAreas.addAll(filteredList);
+        adapter.updateData(filteredList);
+        findViewById(R.id.tvNoAreas).setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void setupBottomNavigation() {
@@ -103,10 +152,14 @@ public class CommonAreasActivity extends AppCompatActivity implements CommonArea
             public void onResponse(Call<List<CommonArea>> call, Response<List<CommonArea>> response) {
                 if (response.isSuccessful()) {
                     List<CommonArea> data = response.body();
+                    allCommonAreas.clear();
                     availableCommonAreas.clear();
+
                     if (data != null) {
+                        allCommonAreas.addAll(data);
                         availableCommonAreas.addAll(data);
                     }
+
                     adapter.updateData(availableCommonAreas);
                     findViewById(R.id.tvNoAreas).setVisibility(availableCommonAreas.isEmpty() ? View.VISIBLE : View.GONE);
                 } else {
