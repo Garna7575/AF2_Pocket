@@ -135,6 +135,9 @@ public interface ApiService {
     @POST("neighborhood")
     Call<Void> sendNeighborhoodCreationRequest(@Body creationNeighborhoods request);
 
+    @POST("receipts")
+    Call<Void> createReceipt(@Body Receipt receipt);
+
     @Multipart
     @POST("records/upload")
     Call<Void> uploadRecord(

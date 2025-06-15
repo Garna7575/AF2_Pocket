@@ -23,6 +23,7 @@ import com.example.apptfc.R;
 import com.example.apptfc.adapters.IncidenceAdapter;
 import com.example.apptfc.adapters.NeighborAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
     private List<Incidence> allIncidences = new ArrayList<>();
     private BottomNavigationView bottomNavigationView;
     private int neighborhoodId;
+    private FloatingActionButton fabAddReceipt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_neighborhood_detail);
 
         initializeViews();
+        setupListeners();
         setupTabs();
         setupBottomNavigation();
         loadNeighbors();
@@ -80,6 +83,16 @@ public class NeighborhoodDetailActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        fabAddReceipt = findViewById(R.id.fabAddReceipt);
+
+        neighborhoodId = sharedPreferences.getInt("neighborhoodId", -1);
+    }
+
+    public void setupListeners(){
+        fabAddReceipt.setOnClickListener(v -> {
+            startActivity(new Intent(NeighborhoodDetailActivity.this, AddReceiptActivity.class));
+        });
     }
     private void setupTabs() {
         tabHost.setup();

@@ -16,6 +16,9 @@ public class Receipt implements Parcelable {
     private Date date;
     private int neighborId;
 
+    public Receipt() {
+    }
+
     // Constructor usado por Parcelable
     protected Receipt(Parcel in) {
         id = in.readInt();
