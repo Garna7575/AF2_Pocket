@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptfc.API.models.CommonArea;
 import com.example.apptfc.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.Collections;
@@ -21,14 +22,17 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
     private final OnAreaSelectedListener listener;
     private CommonArea selectedArea = null;
     private int selectedPosition = RecyclerView.NO_POSITION;
+    private boolean showDeleteButton = false;
 
     public interface OnAreaSelectedListener {
         void onAreaSelected(CommonArea area);
+        void onDeleteArea(CommonArea area);
     }
 
-    public CommonAreaAdapter(List<CommonArea> commonAreas, OnAreaSelectedListener listener) {
+    public CommonAreaAdapter(List<CommonArea> commonAreas, OnAreaSelectedListener listener, boolean showDeleteButton) {
         this.commonAreas = commonAreas;
         this.listener = listener;
+        this.showDeleteButton = showDeleteButton;
     }
 
     public void updateData(List<CommonArea> newData) {
@@ -48,35 +52,10 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
             }
             if (selectedPosition == RecyclerView.NO_POSITION) {
                 selectedArea = null;
+                showDeleteButton = false;
             }
         }
         notifyDataSetChanged();
-    }
-
-
-    public void setSelectedArea(CommonArea area) {
-        this.selectedArea = area;
-        if (commonAreas != null) {
-            for (int i = 0; i < commonAreas.size(); i++) {
-                if (commonAreas.get(i).getId() == area.getId()) {
-                    selectedPosition = i;
-                    break;
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-    public void setSelectedPosition(int position) {
-        if (position >= 0 && position < commonAreas.size()) {
-            selectedArea = commonAreas.get(position);
-            selectedPosition = position;
-            notifyDataSetChanged();
-        }
-    }
-
-    public CommonArea getSelectedArea() {
-        return selectedArea;
     }
 
     @NonNull
@@ -92,19 +71,20 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
         CommonArea area = commonAreas.get(position);
         holder.tvCommonAreaName.setText(area.getName());
 
-        boolean isSelected = position == selectedPosition;
+        boolean isSelected = (selectedArea != null && selectedArea.getId() == area.getId());
 
-        holder.card.setStrokeWidth(isSelected ? 4 : 0);
-        holder.card.setStrokeColor(isSelected ?
-                ContextCompat.getColor(holder.itemView.getContext(), R.color.colorAccent) :
-                0);
+        int backgroundColor = isSelected ?
+                ContextCompat.getColor(holder.itemView.getContext(), R.color.statusResolved) :
+                ContextCompat.getColor(holder.itemView.getContext(), R.color.background_light);
+
+        holder.card.setCardBackgroundColor(backgroundColor);
+
+        holder.btnDelete.setVisibility(View.GONE);
 
         holder.itemView.setOnClickListener(v -> {
             selectedArea = area;
-            int previousPosition = selectedPosition;
-            selectedPosition = holder.getAdapterPosition();
-            notifyItemChanged(previousPosition);
-            notifyItemChanged(selectedPosition);
+            notifyDataSetChanged();
+
             if (listener != null) {
                 listener.onAreaSelected(area);
             }
@@ -119,12 +99,13 @@ public class CommonAreaAdapter extends RecyclerView.Adapter<CommonAreaAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView tvCommonAreaName;
         public final MaterialCardView card;
+        public final MaterialButton btnDelete;
 
         public ViewHolder(View view) {
             super(view);
             tvCommonAreaName = view.findViewById(R.id.tvCommonAreaName);
             card = view.findViewById(R.id.cardCommonArea);
+            btnDelete = view.findViewById(R.id.btnDelete);
         }
     }
 }
-

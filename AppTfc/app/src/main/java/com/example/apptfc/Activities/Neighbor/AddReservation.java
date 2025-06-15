@@ -163,10 +163,17 @@ public class AddReservation extends AppCompatActivity {
 
     private void setupRecyclerView() {
         rvCommonAreas.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommonAreaAdapter(availableCommonAreas, area -> {
-            selectedArea = area;
-            adapter.notifyDataSetChanged();
-        });
+        adapter = new CommonAreaAdapter(availableCommonAreas, new CommonAreaAdapter.OnAreaSelectedListener() {
+            @Override
+            public void onAreaSelected(CommonArea area) {
+                selectedArea = area;
+
+            }
+
+            @Override
+            public void onDeleteArea(CommonArea area) {
+            }
+        }, false);
         rvCommonAreas.setAdapter(adapter);
     }
 

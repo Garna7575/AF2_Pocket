@@ -158,4 +158,7 @@ public interface ApiService {
 
     @DELETE("users/neighbor/{id}")
     Call<Void> deleteNeighbor(@Path("id") int id);
+
+    @DELETE("common-area/{id}")
+    Call<Void> deleteCommonArea(@Path("id") int id);
 }
