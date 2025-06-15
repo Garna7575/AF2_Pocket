@@ -107,13 +107,6 @@ public class AnnouncementsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewIncidencias);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         fabAddIncidence = findViewById(R.id.fabAddIncidencia);
-
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
     }
 
     private void loadIncidences() {
