@@ -13,7 +13,7 @@ Esta aplicación proporciona una **solución integral** para centralizar la gest
 
 Puedes descargar la aplicación directamente en el siguiente link:
 
-[**📥 Descargar .apk**](https://example.com/ruta/de/tu/aplicacion/app-release.apk)
+[**📥 Descargar .apk**](https://github.com/Garna7575/AF2_Pocket/releases/tag/V1.0)
 
 ## ⚙ Requerimientos
 
