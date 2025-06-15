@@ -17,8 +17,9 @@ Puedes descargar la aplicación directamente en el siguiente link:
 
 ## ⚙ Requerimientos
 
-- **Android 5.0 o superior**
+- **Android 7.0 o superior**
 - **Conexión a Internet**
+- **Mínimo 50 MB de espacio disponible**
 - **Un dispositivo con al menos 2 GB de RAM**
 
 ## 🔹 Pasos de instalación
